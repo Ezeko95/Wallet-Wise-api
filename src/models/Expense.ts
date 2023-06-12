@@ -4,7 +4,8 @@ import {
   Table,
   CreatedAt,
   UpdatedAt,
-} from "sequelize-typescript";
+  DataType,
+} from 'sequelize-typescript';
 @Table
 export class Expense extends Model<Expense> {
   @Column({
@@ -14,18 +15,22 @@ export class Expense extends Model<Expense> {
   id!: number;
 
   @Column({
-    allowNull: false,
+    allowNull: true,
   })
+  description!: string;
 
   @Column({
     allowNull: false,
   })
   category!: string;
-  
+
   @Column({
     allowNull: false,
   })
   paymentMethod!: string;
+
+  @Column({ type: 'float', allowNull: false })
+  amount!: number;
 
   @CreatedAt
   @Column
