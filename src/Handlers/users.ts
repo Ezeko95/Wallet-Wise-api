@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import {
   createUser,
   getAllUsers,
+  getOneUser,
   updateUser,
 } from "../Controllers/usersControllers";
 
@@ -41,3 +42,13 @@ export const putUser = async (req: Request, res: Response) => {
     res.status(400).json({message: 'failed'})
   }
 };
+
+export const getUser= async (req: Request, res:Response) =>{
+  const id= req.params.id;
+  try {
+    const user= await getOneUser(+id);
+    res.status(200).send(user)
+  } catch (error) {
+    res.status(400).json({message: "Failed to fecth users. Try again later..."})
+  }
+}
