@@ -35,6 +35,7 @@ export class User extends Model<User> {
 
   @Column({
     allowNull: false,
+    defaultValue: false,
   })
   premium!: boolean;
 
