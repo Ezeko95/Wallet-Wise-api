@@ -1,5 +1,6 @@
 import { User } from "../models/User";
 import { Request, Response } from "express";
+import { createUser } from "../Controllers/usersControllers"
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -17,10 +18,9 @@ export const getUsers = async (req: Request, res: Response) => {
 export const postUser = async (req: Request, res: Response) => {
   const user = req.body;
   try {
-    User.create(user).then((createdUser) => {
-      res.send(createdUser);
-    });
-  } catch (error) {
+    createUser(user);
+    res.status(200).send("creado exitosamente")
+  } catch (error:any) {
     console.error("Error ocurred while creating user", error);
     res
       .status(400)
