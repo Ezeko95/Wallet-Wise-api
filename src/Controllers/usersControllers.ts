@@ -1,4 +1,4 @@
-import { User as UserModel } from "../models/User";
+import { User as UserModel } from '../models/User';
 
 interface IUser extends UserModel {
   name: string;
@@ -17,20 +17,22 @@ export const getAllUsers = async () => {
   return users;
 };
 
-export const getOneUser= async (id: number)=>{
-    const user= await UserModel.findByPk(id);
-    if(!user) throw new Error("No user found");
+export const getOneUser = async (id: number) => {
+  const user = await UserModel.findByPk(id);
+  if (!user) throw new Error('No user found');
 
-    return user;
-}
+  return user;
+};
 
 export const updateUser = async (id: number) => {
   const user = await UserModel.findByPk(id);
   if (!user) {
-    throw new Error("No user found");
+    throw new Error('No user found');
   }
   const toggle = user.premium;
   UserModel.update({ premium: !toggle }, { where: { id } });
-  
+
   return `User has changed from ${toggle} succesfully`;
 };
+
+//Commit
