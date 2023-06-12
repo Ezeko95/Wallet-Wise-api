@@ -1,22 +1,38 @@
-import { User as UserModel} from "../models/User";
+import { User as UserModel } from '../models/User';
 
-interface IUser extends UserModel{
-    name: string;
-    lastName: string;
-    email: string;
-    password: string;
-    premium: boolean;
+interface IUser extends UserModel {
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
+  premium: boolean;
 }
-export const createUser =  (user: IUser) => {
+export const createUser = (user: IUser) => {
+  const newUser = UserModel.create(user);
+  return newUser;
+};
 
-    const newUser = UserModel.create(user)
+export const getAllUsers = async () => {
+  const users = await UserModel.findAll();
+  return users;
+};
 
-    return newUser
+export const getOneUser = async (id: number) => {
+  const user = await UserModel.findByPk(id);
+  if (!user) throw new Error('No user found');
 
-}
+  return user;
+};
 
-export const getAllUsers= async ()=>{
-    const users= await UserModel.findAll();
-    return users;
-}
+export const updateUser = async (id: number) => {
+  const user = await UserModel.findByPk(id);
+  if (!user) {
+    throw new Error('No user found');
+  }
+  const toggle = user.premium;
+  UserModel.update({ premium: !toggle }, { where: { id } });
 
+  return `User has changed from ${toggle} succesfully`;
+};
+
+//Commit
