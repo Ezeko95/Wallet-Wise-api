@@ -16,7 +16,16 @@ export class Expense extends Model<Expense> {
   @Column({
     allowNull: false,
   })
-  name!: string;
+
+  @Column({
+    allowNull: false,
+  })
+  category!: string;
+  
+  @Column({
+    allowNull: false,
+  })
+  paymentMethod!: string;
 
   @CreatedAt
   @Column
