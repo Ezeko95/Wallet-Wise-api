@@ -1,12 +1,11 @@
 import { User } from "../models/User";
 import { Request, Response } from "express";
-import { createUser } from "../Controllers/usersControllers"
+import { createUser, getAllUsers } from "../Controllers/usersControllers"
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    await User.findAll().then((users) => {
-      res.send(users);
-    });
+    const users= await getAllUsers();
+    res.send(users); 
   } catch (error) {
     console.error("Error ocurred while fetching users...", error);
     res

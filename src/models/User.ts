@@ -36,7 +36,7 @@ export class User extends Model<User> {
   @Column({
     allowNull: false,
   })
-  premium!: false;
+  premium!: boolean;
 
   @CreatedAt
   @Column

@@ -1,9 +1,22 @@
-import { User } from "../models/User";
+import { User as UserModel} from "../models/User";
 
-export const createUser = async (user:any) => {
+interface IUser extends UserModel{
+    name: string;
+    lastName: string;
+    email: string;
+    password: string;
+    premium: boolean;
+}
+export const createUser =  (user: IUser) => {
 
-    const newUser = await User.create(user)
+    const newUser = UserModel.create(user)
 
     return newUser
 
 }
+
+export const getAllUsers= async ()=>{
+    const users= await UserModel.findAll();
+    return users;
+}
+
