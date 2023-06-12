@@ -17,6 +17,13 @@ export const getAllUsers = async () => {
   return users;
 };
 
+export const getOneUser= async (id: number)=>{
+    const user= await UserModel.findByPk(id);
+    if(!user) throw new Error("No user found");
+
+    return user;
+}
+
 export const updateUser = async (id: number) => {
   const user = await UserModel.findByPk(id);
   if (!user) {
