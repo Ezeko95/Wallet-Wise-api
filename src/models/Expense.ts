@@ -4,8 +4,11 @@ import {
   Table,
   CreatedAt,
   UpdatedAt,
-  DataType,
+  ForeignKey,
+  BelongsTo
 } from 'sequelize-typescript';
+import { Balance } from './Balance';
+
 @Table
 export class Expense extends Model<Expense> {
   @Column({
@@ -39,4 +42,11 @@ export class Expense extends Model<Expense> {
   @UpdatedAt
   @Column
   updatedAt!: Date;
+
+  @ForeignKey(() => Balance)
+  @Column
+  balanceId!: number;
+
+  @BelongsTo(() => Balance)
+  balance!: Balance;
 }

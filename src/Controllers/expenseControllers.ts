@@ -12,6 +12,21 @@ export const createExpense = async (expense: IExpense) => {
   return newExpense;
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const getAllExpenses = async () => {
   const allExpenses = await ExpenseModel.findAll();
   return allExpenses;
