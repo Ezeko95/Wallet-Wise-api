@@ -34,5 +34,3 @@ export const updateUser = async (id: number) => {
 
   return `User has changed from ${toggle} succesfully`;
 };
-
-//Commit
