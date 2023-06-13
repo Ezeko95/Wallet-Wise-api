@@ -35,10 +35,10 @@ import { User } from './User';
     updatedAt!: Date;
 
     @HasMany(()=> Expense)
-    expenseId!: number;
+    expense!: Expense[];
 
     @HasMany(()=> Income)
-    incomeId!: number;
+    income!: Income[];
 
     @ForeignKey(() => User)
     @Column
