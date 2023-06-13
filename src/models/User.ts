@@ -4,7 +4,10 @@ import {
   Table,
   CreatedAt,
   UpdatedAt,
+  HasOne
 } from "sequelize-typescript";
+import { Balance } from "./Balance";
+
 @Table
 export class User extends Model<User> {
   @Column({
@@ -46,4 +49,7 @@ export class User extends Model<User> {
   @UpdatedAt
   @Column
   updatedAt!: Date;
+
+  @HasOne(() => Balance)
+  balance!: Balance;
 }
