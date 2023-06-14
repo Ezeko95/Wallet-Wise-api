@@ -59,11 +59,5 @@ export const updateUser = async (id: number) => {
   const toggle = user.premium;
   UserModel.update({ premium: !toggle }, { where: { id } });
 
-<<<<<<< HEAD
-
-
   return `the suscription has changed from ${toggle} succesfully to ${!toggle}`;
-=======
-  return `User has changed from ${toggle} succesfully`;
->>>>>>> 997f3bf5648a35a2aab4e6ea5c4fa69a6224f083
 };
