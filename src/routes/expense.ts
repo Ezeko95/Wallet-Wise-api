@@ -4,6 +4,6 @@ import { getExpenses, postExpense } from '../Handlers/expenseHandler';
 const expenseRouter: Router = Router();
 
 expenseRouter.get('/', getExpenses);
-expenseRouter.post('/', postExpense);
+expenseRouter.post('/:id', postExpense);
 
 export default expenseRouter;

@@ -4,7 +4,11 @@ import {
   Table,
   CreatedAt,
   UpdatedAt,
-} from "sequelize-typescript";
+  ForeignKey,
+  BelongsTo
+} from 'sequelize-typescript';
+import { Balance } from './Balance';
+
 @Table
 export class Expense extends Model<Expense> {
   @Column({
@@ -31,6 +35,12 @@ export class Expense extends Model<Expense> {
   @Column({ type: "float", allowNull: false })
   amount!: number;
 
+  @Column({
+    allowNull: false,
+    defaultValue:false
+  })
+  deletedExpense!: boolean;
+
   @CreatedAt
   @Column
   createdAt!: Date;
@@ -38,4 +48,11 @@ export class Expense extends Model<Expense> {
   @UpdatedAt
   @Column
   updatedAt!: Date;
+
+  @ForeignKey(() => Balance)
+  @Column
+  balanceId!: number;
+
+  @BelongsTo(() => Balance)
+  balance!: Balance;
 }

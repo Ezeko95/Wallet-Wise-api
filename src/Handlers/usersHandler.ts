@@ -21,8 +21,10 @@ export const getUsers = async (req: Request, res: Response) => {
 export const postUser = async (req: Request, res: Response) => {
   const user = req.body;
   try {
-    createUser(user);
-    res.status(200).send(user);
+    if(!user.name|| !user.lastname || !user.email || !user.password) throw Error('Missing data');
+    const newUser= await createUser(user, {userId:0});
+    
+    res.status(200).send(newUser);
   } catch (error: any) {
     console.error('Error ocurred while creating user', error);
     res
