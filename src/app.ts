@@ -3,7 +3,7 @@ import config from "../lib/config";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import cors from "cors";
-import router from "./routes/index";
+import router from "./routes/index.routes";
 
 const app: Application = express();
 app.use(express.urlencoded({ extended: true, limit: "50mb" })); //middleware

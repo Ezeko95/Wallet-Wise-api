@@ -1,13 +1,11 @@
 import { Router } from "express";
-import userRouter from "./user";
-import movementRouter from "./movements"
-import sharedRouter from "./shared";
-import balanceRouter from "./balance";
+import userRouter from "./user.routes";
+import movementRouter from "./movements.routes";
+import balanceRouter from "./balance.routes";
 const router = Router();
 
 router.use("/user", userRouter);
 router.use("/movement", movementRouter)
 router.use("/balance", balanceRouter)
-router.use("/shared", sharedRouter)
 
 export default router;

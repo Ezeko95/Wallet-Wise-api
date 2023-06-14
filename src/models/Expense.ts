@@ -32,7 +32,7 @@ export class Expense extends Model<Expense> {
   })
   paymentMethod!: string;
 
-  @Column({ type: 'float', allowNull: false })
+  @Column({ type: "float", allowNull: false })
   amount!: number;
 
   @Column({
