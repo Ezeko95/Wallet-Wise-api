@@ -1,11 +1,7 @@
 import { Request, Response } from 'express';
-import {
-  createExpense,
-  createIncome,
-  getAllMovements,
-  getAllIdExpense,
-  getAllIdIncomes
-} from '../Controllers/movementControllers';
+import { getAllMovements } from '../Controllers/balanceControllers';
+import { createExpense, getAllIdExpense, deleteExpense } from '../Controllers/expenseControllers'
+import { createIncome, getAllIdIncomes, deleteIncome} from '../Controllers/incomeControllers'
 import { Expense as ExpenseModel } from '../models/Expense';
 import { Income as IncomeModel } from '../models/Income';
 
@@ -14,13 +10,13 @@ export interface IExpense extends ExpenseModel {
   amount: number;
   paymentMethod: string;
   category: string;
-}
+};
 
 export interface IIncome extends IncomeModel {
   type: string;
   amount: number;
-}
-
+  account: string;
+};
 
 export const postMovement = async (req: Request, res: Response) => {
 
@@ -77,7 +73,7 @@ export const getBalance = async (req: Request, res: Response) => {
       .status(400)
       .json({ message: 'Failed to fetch movements. Try again later...' });
   }
-}
+};
 
 
 export const getExpenses = async (req: Request, res: Response) => {
@@ -112,5 +108,37 @@ export const getIncomes = async (req: Request, res: Response) => {
       .status(400)
       .json({ message: 'Failed to fetch incomes. Try again later...' });
   }
-}
+};
 
+
+export const hideExpense = async(req: Request, res: Response)=>{
+  const id = req.params.id;
+  
+  try {
+    const expenseDel= deleteExpense(+id);
+    if(!expenseDel) throw Error('Expense could not be deleted')
+    res.status(200).send("the expense id: "+ id +" has been deleted ")
+  } catch (error) {
+    console.error('Error ocurred while fetching incomes...', error);
+    res
+      .status(400)
+      .json({ message: 'Failed to fetch incomes. Try again later...' });
+  }
+};
+
+
+export const hideIncome = (req: Request, res: Response)=>{
+  const id = req.params.id;
+  
+  try {
+    const incomeDel= deleteIncome(+id);
+    if(!incomeDel) throw Error('Income could not be deleted');
+    res.status(200).send("the income id: "+ id +" has been deleted ")
+  } catch (error) {
+    console.error('Error ocurred while fetching incomes...', error);
+    res
+      .status(400)
+      .json({ message: 'Failed to fetch incomes. Try again later...' });
+  }
+  
+};
