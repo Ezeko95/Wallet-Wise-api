@@ -16,10 +16,6 @@ export const getExpenses = async (req: Request, res: Response) => {
   }
 };
 
-
-
-
-
 export const postExpense = async (req: Request, res: Response) => {
   const expense = req.body;
   try {
