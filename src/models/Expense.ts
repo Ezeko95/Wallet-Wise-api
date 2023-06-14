@@ -35,6 +35,12 @@ export class Expense extends Model<Expense> {
   @Column({ type: "float", allowNull: false })
   amount!: number;
 
+  @Column({
+    allowNull: false,
+    defaultValue:false
+  })
+  deletedExpense!: boolean;
+
   @CreatedAt
   @Column
   createdAt!: Date;
