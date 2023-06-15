@@ -1,11 +1,11 @@
 import { User as UserModel } from '../models/User';
 import { Balance as BalanceModel} from '../models/Balance';
 import { sequelize } from '../db';
+
 interface IUser extends UserModel {
   name: string;
   lastName: string;
   email: string;
-  password: string;
   premium: boolean;
   balance: BalanceModel
 }
@@ -59,5 +59,5 @@ export const updateUser = async (id: number) => {
   const toggle = user.premium;
   UserModel.update({ premium: !toggle }, { where: { id } });
 
-  return `User has changed from ${toggle} succesfully`;
+  return `the suscription has changed from ${toggle} succesfully to ${!toggle}`;
 };

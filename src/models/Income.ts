@@ -22,8 +22,16 @@ export class Income extends Model<Income> {
     })
     type!: string;
 
+    @Column({
+        allowNull: true,
+    })
+    account!: string;
+
     @Column({ type: 'float', allowNull: false })
     amount!: number;
+
+    @Column({ allowNull: false, defaultValue:false })
+    deletedIncome!: boolean;
 
     @CreatedAt
     @Column
