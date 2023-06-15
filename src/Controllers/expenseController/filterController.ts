@@ -4,7 +4,9 @@ import { IAccount, IDate } from "../../Handlers/expenseClassification/filterHand
 
 export const expenseDateFilter = async (date: IDate, id:number) => {
     const arrayExpense = await getAllIdExpense(id)
+    
     const expenseFilter = arrayExpense?.expense.filter( e => e.createdAt.toISOString().split("T")[0] === date.date);
+    
     return expenseFilter;
 }
 

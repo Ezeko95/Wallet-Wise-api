@@ -1,15 +1,17 @@
 import { Request, Response } from 'express';
 import { dateBalance, accountBalance } from '../../Controllers/balanceController/filterController';
-
+import { IDate } from '../expenseClassification/filterHandler';
 
 export const getBalanceDateFilter = async (req: Request, res: Response) => {
-    const date: Date = req.body;
+    const date: IDate = req.body;
+    const { id }= req.params;
+    
     try {
-       const filter = dateBalance(date);
+       const filter = await dateBalance(date, +id);
 
-      //  if(filter.length === 0) throw Error('Empty filter')
+      if(filter?.length === 0) throw Error('Empty filter')
 
-        res.status(200).send(' date filter');
+        res.status(200).send(filter);
     } catch (error) {
         res
         .status(400)

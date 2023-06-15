@@ -6,9 +6,9 @@ import { getBalanceDateOrder, getBalanceAmountOrder, getBalanceAlphaOrder } from
 
 const balanceRouter : Router = Router();
 
-    balanceRouter.get('/dateFilter', getBalanceDateFilter);
+    balanceRouter.get('/dateFilter/:id', getBalanceDateFilter);
 
-    balanceRouter.get('/accountFilter', getBalanceAccountFilter);
+    balanceRouter.get('/accountFilter/:id', getBalanceAccountFilter);
 
     balanceRouter.get('/alphaOrder', getBalanceAlphaOrder)
 
