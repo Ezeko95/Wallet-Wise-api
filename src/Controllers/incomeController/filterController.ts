@@ -11,6 +11,7 @@ export const incomeDateFilter = async (date:IDate, id:number) => {
 }
 
 export const incomeAccountFilter = async (account : IAccount, id:number) => {
+    
     const arrayIncome= await getAllIdIncomes(id);
     
     const incomeFilter = arrayIncome?.income.filter( e => e.account === account.account);

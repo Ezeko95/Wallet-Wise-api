@@ -1,9 +1,20 @@
-import { Balance as BalanceModel} from '../../models/Balance';
+import { expenseDateFilter } from "../expenseController/filterController";
+import { incomeDateFilter } from "../incomeController/filterController";
+import { IDate } from "../../Handlers/expenseClassification/filterHandler";
 
 
-export const dateBalance = async(date: Date) =>{
-//2022-05-21
-    const expense= await BalanceModel
+export const dateBalance = async (date: IDate, id: number) =>{
+
+    const expenseDate = await expenseDateFilter(date, id);
+    const incomeDate = await incomeDateFilter(date, id);
+
+    console.log('estoy en balance', expenseDate)
+    
+    if(expenseDate?.length===0 && incomeDate?.length===0) return 'Empty filter';
+    else if(expenseDate?.length===0) return incomeDate;
+    else if(incomeDate?.length===0) return expenseDate;
+    else if(expenseDate!==undefined && expenseDate?.length!==0 && incomeDate!==undefined && incomeDate?.length!==0) return [...incomeDate, ...expenseDate]
+    
 }
 
 export const accountBalance = (account:string) =>{
