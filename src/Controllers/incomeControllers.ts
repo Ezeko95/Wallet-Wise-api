@@ -1,6 +1,6 @@
 import { Balance as BalanceModel } from '../models/Balance';
-import {Income as IncomeModel} from '../models/Income';
-import {IIncome} from '../Handlers/movementsHandler';
+import { Income as IncomeModel } from '../models/Income';
+import { IIncome } from '../Handlers/movementsHandler';
 
 export const createIncome = async (infoIncome: IIncome) => {
 
@@ -22,6 +22,7 @@ export const createIncome = async (infoIncome: IIncome) => {
 
     return finalBalance;
 };
+
 
 export const getAllIdIncomes = async (id: number) => {
     const idIncomes= await BalanceModel.findOne({

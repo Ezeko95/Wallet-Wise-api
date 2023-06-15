@@ -1,6 +1,6 @@
 import { Expense as ExpenseModel } from '../models/Expense';
 import { Balance as BalanceModel } from '../models/Balance';
-import {IExpense} from '../Handlers/movementsHandler';
+import { IExpense} from '../Handlers/movementsHandler';
 
 export const createExpense = async (infoExpense: IExpense) => {
   //crea el gasto especifico
