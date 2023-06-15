@@ -1,11 +1,11 @@
 import { User as UserModel } from '../models/User';
 import { Balance as BalanceModel} from '../models/Balance';
 import { sequelize } from '../db';
+
 interface IUser extends UserModel {
   name: string;
   lastName: string;
   email: string;
-  password: string;
   premium: boolean;
   balance: BalanceModel
 }

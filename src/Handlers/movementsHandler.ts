@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { getAllMovements } from '../Controllers/balanceControllers';
-import { createExpense } from '../Controllers/expenseControllers'
-import { createIncome } from '../Controllers/incomeControllers'
+import { getAllMovements } from '../Controllers/balanceController/balanceControllers';
+import { createExpense } from '../Controllers/expenseController/expenseControllers'
+import { createIncome } from '../Controllers/incomeController/incomeControllers'
 import { Expense as ExpenseModel } from '../models/Expense';
 import { Income as IncomeModel } from '../models/Income';
 

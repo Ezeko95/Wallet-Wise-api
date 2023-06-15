@@ -3,7 +3,7 @@ import {
   createExpense,
   getAllIdExpense,
   deleteExpense
-} from '../Controllers/expenseControllers';
+} from '../../Controllers/expenseController/expenseControllers';
 
 export const getExpenses = async (req: Request, res: Response) => {
   const id= req.params.id;
