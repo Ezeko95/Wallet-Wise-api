@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { expenseAccountFilter, expenseDateFilter} from '../../Controllers/expenseController/filterController';
+import { expenseAccountFilter, expenseDateFilter} from '../../../Controllers/Classificators/Filters/expenseFilterController';
 
 export interface IDate {
     date:string
@@ -11,7 +11,7 @@ export const getExpenseDateFilter = async(req: Request, res: Response) =>{
     try {
         const filter = await expenseDateFilter(date, +id);
         
-        if(filter?.length === 0) throw Error('Empty filter');
+        // if(filter?.length === 0) throw Error('Empty filter');
 
         res.status(200).send(filter)
     } catch (error) {
@@ -34,7 +34,7 @@ export const getExpenseAccountFilter = async(req: Request, res: Response) =>{
     try {
         const filter= await expenseAccountFilter(account, +id);
         
-        if(filter?.length === 0) throw Error('Empty filter');
+        // if(filter?.length === 0) throw Error('Empty filter');
         
         res.status(200).send(filter);
     } catch (error) {

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { getAllMovements } from '../Controllers/balanceController/balanceControllers';
-import { createExpense } from '../Controllers/expenseController/expenseControllers'
-import { createIncome } from '../Controllers/incomeController/incomeControllers'
+import { getAllMovements } from '../Controllers/balanceControllers';
+import { createExpense } from '../Controllers/expenseControllers'
+import { createIncome } from '../Controllers/incomeControllers'
 import { Expense as ExpenseModel } from '../models/Expense';
 import { Income as IncomeModel } from '../models/Income';
 
@@ -10,6 +10,7 @@ export interface IExpense extends ExpenseModel {
   amount: number;
   paymentMethod: string;
   category: string;
+  balanceId: number;
 };
 
 
@@ -17,6 +18,7 @@ export interface IIncome extends IncomeModel {
   type: string;
   amount: number;
   account: string;
+  balanceId: number;
 };
 
 
@@ -31,7 +33,7 @@ export const postMovement = async (req: Request, res: Response) => {
         
           const infoExpense: IExpense = {
             ...movement,
-            balanceId: +id
+            ["balanceId"] : +id,
           }
           const newExpense = await createExpense(infoExpense);
           res.status(200).send(newExpense);
@@ -43,7 +45,7 @@ export const postMovement = async (req: Request, res: Response) => {
         
           const infoIncome: IIncome = {
             ...movement,
-            balanceId: +id
+            ["balanceId"]: +id
           }
           const newIncome= await createIncome(infoIncome);
           res.status(200).send(newIncome);

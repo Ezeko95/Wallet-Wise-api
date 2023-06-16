@@ -1,8 +1,7 @@
 import {Router} from 'express';
 import { getBalance } from '../Handlers/movementsHandler';
-import { getBalanceDateFilter, getBalanceAccountFilter } from '../Handlers/balanceClassification/filterHandler';
-import { getBalanceDateOrder, getBalanceAmountOrder, getBalanceAlphaOrder } from '../Handlers/balanceClassification/orderHandler';
-
+import { getBalanceDateFilter, getBalanceAccountFilter } from '../Handlers/Classificators/Filters/balanceFilterHandler';
+import { getBalanceDateOrder, getBalanceAmountOrder, getBalanceAlphaOrder } from '../Handlers/Classificators/Orders/balanceOrderHandler';
 
 const balanceRouter : Router = Router();
 
