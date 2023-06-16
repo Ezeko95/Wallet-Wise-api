@@ -31,6 +31,6 @@ app.use((err: error, req: Request, res: Response, next: NextFunction) => {
   res.status(status).send(message);
 });
 
-app.use("/api", router);
+app.use("/", router);
 
 export default app;
