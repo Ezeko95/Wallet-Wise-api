@@ -1,16 +1,15 @@
 import { Router } from 'express';
 import { postMovement } from '../Handlers/movementsHandler';
-import { getExpenses, hideExpense } from '../Handlers/expenseClassification/expenseHandler';
-import { getIncomes, hideIncome } from '../Handlers/incomeClassification/incomeHandler';
-import { getIncomeDateFilter, getIncomeAccountFilter } from '../Handlers/incomeClassification/filterHandler';
-import { getExpenseDateFilter, getExpenseAccountFilter } from '../Handlers/expenseClassification/filterHandler';
+import { getExpenses, hideExpense } from '../Handlers/expenseHandler';
+import { getIncomes, hideIncome } from '../Handlers/incomeHandler';
+import { getIncomeDateFilter, getIncomeAccountFilter } from '../Handlers/Classificators/Filters/incomeFilterHandler';
+import { getExpenseDateFilter, getExpenseAccountFilter } from '../Handlers/Classificators/Filters/expenseFilterHandler';
 
 const movementRouter: Router = Router();
 
     movementRouter.post('/:id', postMovement);
 
 
-    
     movementRouter.get('/expenses/:id', getExpenses);
 
     movementRouter.delete('/expense/:id', hideExpense);
@@ -18,7 +17,6 @@ const movementRouter: Router = Router();
     movementRouter.get('/expenseDateFilter/:id', getExpenseDateFilter);
 
     movementRouter.get('/expenseAccountFilter/:id', getExpenseAccountFilter);
-
 
 
     movementRouter.get('/incomes/:id', getIncomes);

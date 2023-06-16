@@ -12,7 +12,7 @@ import { Balance } from './Balance';
 
 
 @Table
-export class Accounts extends Model<Accounts> {
+export class Account extends Model<Account> {
     @Column({
         primaryKey: true,
         autoIncrement: true,

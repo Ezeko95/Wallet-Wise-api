@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { expenseAccountFilter, expenseDateFilter} from '../../Controllers/expenseController/filterController';
+import { expenseAccountFilter, expenseDateFilter} from '../../../Controllers/Classificators/Filters/expenseFilterController';
 
 export interface IDate {
     date:string

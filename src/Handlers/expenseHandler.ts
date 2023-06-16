@@ -1,9 +1,5 @@
 import { Request, Response } from 'express';
-import {
-  createExpense,
-  getAllIdExpense,
-  deleteExpense
-} from '../../Controllers/expenseController/expenseControllers';
+import { createExpense, getAllIdExpense, deleteExpense } from '../Controllers/expenseControllers';
 
 export const getExpenses = async (req: Request, res: Response) => {
   const id= req.params.id;

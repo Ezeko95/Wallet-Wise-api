@@ -1,6 +1,6 @@
-import { expenseDateFilter } from "../expenseController/filterController";
-import { incomeDateFilter } from "../incomeController/filterController";
-import { IDate } from "../../Handlers/expenseClassification/filterHandler";
+import { expenseDateFilter } from "./expenseFilterController";
+import { incomeDateFilter } from "./incomeFilterController";
+import { IDate } from "../../../Handlers/Classificators/Filters/expenseFilterHandler";
 
 
 export const dateBalance = async (date: IDate, id: number) =>{

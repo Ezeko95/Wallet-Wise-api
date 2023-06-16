@@ -1,6 +1,6 @@
-import { Expense as ExpenseModel } from "../../models/Expense"
-import { getAllIdExpense } from "./expenseControllers"
-import { IAccount, IDate } from "../../Handlers/expenseClassification/filterHandler";
+import { Expense as ExpenseModel } from "../../../models/Expense"
+import { getAllIdExpense } from "../../expenseControllers"
+import { IAccount, IDate } from "../../../Handlers/Classificators/Filters/expenseFilterHandler";
 
 export const expenseDateFilter = async (date: IDate, id:number) => {
     // const arrayExpense = await getAllIdExpense(id)

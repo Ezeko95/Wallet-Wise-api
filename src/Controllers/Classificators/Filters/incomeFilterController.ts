@@ -1,5 +1,5 @@
-import { getAllIdIncomes } from "./incomeControllers"
-import { IAccount , IDate} from "../../Handlers/expenseClassification/filterHandler";
+import { getAllIdIncomes } from "../../incomeControllers"
+import { IAccount , IDate} from "../../../Handlers/Classificators/Filters/expenseFilterHandler";
 
 export const incomeDateFilter = async (date:IDate, id:number) => {
     

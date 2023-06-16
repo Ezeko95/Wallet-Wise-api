@@ -1,6 +1,6 @@
-import { Balance as BalanceModel } from '../../models/Balance';
-import { Income as IncomeModel } from '../../models/Income';
-import { IIncome } from '../../Handlers/movementsHandler';
+import { Balance as BalanceModel } from '../models/Balance';
+import { Income as IncomeModel } from '../models/Income';
+import { IIncome } from '../Handlers/movementsHandler';
 
 export const createIncome = async (infoIncome: IIncome) => {
 

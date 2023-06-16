@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAllIdIncomes, deleteIncome } from '../../Controllers/incomeController/incomeControllers';
+import { getAllIdIncomes, deleteIncome } from '../Controllers/incomeControllers';
 
 export const getIncomes = async (req: Request, res: Response) => {
     const id = req.params.id;
