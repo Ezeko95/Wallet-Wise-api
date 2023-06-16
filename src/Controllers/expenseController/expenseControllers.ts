@@ -1,6 +1,6 @@
-import { Expense as ExpenseModel } from '../models/Expense';
-import { Balance as BalanceModel } from '../models/Balance';
-import {IExpense} from '../Handlers/movementsHandler';
+import { Expense as ExpenseModel } from '../../models/Expense';
+import { Balance as BalanceModel } from '../../models/Balance';
+import { IExpense} from '../../Handlers/movementsHandler';
 
 export const createExpense = async (infoExpense: IExpense) => {
   //crea el gasto especifico
@@ -29,7 +29,7 @@ export const createExpense = async (infoExpense: IExpense) => {
 
 
 export const getAllIdExpense = async (id: number) => {
-    const idExpenses= await BalanceModel.findOne({
+    const idExpenses = await BalanceModel.findOne({
     where: { id: id},
     include:[ ExpenseModel]
     });

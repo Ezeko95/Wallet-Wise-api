@@ -1,14 +1,20 @@
 import { Request, Response } from 'express';
 import {
   createExpense,
-  getAllExpenses,
-} from '../Controllers/expenseControllers';
+  getAllIdExpense,
+  deleteExpense
+} from '../../Controllers/expenseController/expenseControllers';
 
 export const getExpenses = async (req: Request, res: Response) => {
+  const id= req.params.id;
+
   try {
-    const response = await getAllExpenses();
-    res.status(200).send(response);
+
+      const expenses = await getAllIdExpense(+id);
+      res.status(200).send(expenses);
+
   } catch (error) {
+
     console.error('Error ocurred while fetching expenses...', error);
     res
       .status(400)
@@ -26,5 +32,20 @@ export const postExpense = async (req: Request, res: Response) => {
     res
       .status(400)
       .json({ message: 'Failed to create expense. Try again later...' });
+  }
+};
+
+export const hideExpense = async(req: Request, res: Response)=>{
+  const id = req.params.id;
+  
+  try {
+    const expenseDel= deleteExpense(+id);
+    if(!expenseDel) throw Error('Expense could not be deleted')
+    res.status(200).send("the expense id: "+ id +" has been deleted ")
+  } catch (error) {
+    console.error('Error ocurred while fetching incomes...', error);
+    res
+      .status(400)
+      .json({ message: 'Failed to fetch incomes. Try again later...' });
   }
 };
