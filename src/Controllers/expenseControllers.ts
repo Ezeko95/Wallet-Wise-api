@@ -1,53 +1,48 @@
 import { Expense as ExpenseModel } from '../models/Expense';
 import { Balance as BalanceModel } from '../models/Balance';
-import { Account, Account as AccountModel } from '../models/Account';
+import { Account as AccountModel } from '../models/Account';
 import { IExpense} from '../Handlers/movementsHandler';
 
 export const createExpense = async (infoExpense: IExpense) => {
-  //crea el gasto especifico
+  
   const newExpense = await ExpenseModel.create(infoExpense);
   
-  //encuentra la cuenta a la cual hace referencia
   const accountToChange = await AccountModel.findOne({
-    where : { name: infoExpense.paymentMethod}
-  } )
+    where : { name: infoExpense.paymentMethod, userId: infoExpense.balanceId}
+  })
 
   if (!accountToChange) {
     throw new Error('Cuenta no encontrada');
   }
 
-  await accountToChange.$add("expense", newExpense );
+  await accountToChange.$add("expense", newExpense);
 
-  const finalAccount = await AccountModel.findOne({
-    where: { name: infoExpense.paymentMethod },
+  const total = accountToChange?.total
+  
+  if(total !== undefined){
+    const newTotal = total - infoExpense.amount
+    await AccountModel.update({total: newTotal},{where: { userId: infoExpense.balanceId, name: infoExpense.paymentMethod}})
+  } 
+
+  const balanceacambiar= await BalanceModel.findOne({where: { id: infoExpense.balanceId}});
+
+  const totalBalance= balanceacambiar?.total;
+  
+  if(totalBalance !== undefined){
+    const newTotalBalance = totalBalance - infoExpense.amount
+    await BalanceModel.update({total: newTotalBalance},{where: { id: infoExpense.balanceId}})
+  }
+
+  return await AccountModel.findOne({
+    where: { name: infoExpense.paymentMethod, userId: infoExpense.balanceId},
     include: [ ExpenseModel ]
   })
-
-  console.log(accountToChange)
-
-
-  // //guardar en una constante el balance total actual
-  //   const total = balanceToChange?.total
-
-  // //condicional para aplicarle al balance total, el gasto realizado
-  //   if(total !== undefined){
-  //   const newTotal = total - infoExpense.amount
-  //   await BalanceModel.update({ total: newTotal }, { where: { id: infoExpense.accountId } });
-  //   }
-
-  // //guarda en una variable el balance, con sus gastos para retornarlo
-  //   const finalBalance = await BalanceModel.findOne({
-  //   where: { id: infoExpense.accountId},
-  //   include:[ ExpenseModel ]
-  //   })
-
-  return finalAccount;
 };
 
 
 export const getAllIdExpense = async (id: number) => {
-    const idExpenses = await BalanceModel.findOne({
-    where: { id: id},
+    const idExpenses = await AccountModel.findAll({
+    where: { userId: id},
     include:[ ExpenseModel]
     });
 
@@ -57,29 +52,76 @@ export const getAllIdExpense = async (id: number) => {
 
 export const deleteExpense = async (id: number) =>{
 
-    const expense = await ExpenseModel.findOne({where: {id: id}});
+  const expense = await ExpenseModel.findOne({where: {id: id}});
 
-    const balanceExpense = expense?.accountId
+  await ExpenseModel.update({deletedExpense: true}, {where: {id: id}});
 
-    const balanceToUpdate = await BalanceModel.findOne({where: { id: balanceExpense}})
+  const accountExpense = expense?.accountId;
 
-    const amountExpense = expense?.amount
+  const accountToUpdate = await AccountModel.findOne({where: { id: accountExpense}});
 
-    await ExpenseModel.update({deletedExpense: true}, {where: {id: id}});
+  const totalAccount = accountToUpdate?.total;
 
-    const total = balanceToUpdate?.total
+  if(totalAccount && expense?.amount){
+    const newTotal = totalAccount + expense?.amount
+    await AccountModel.update({total: newTotal},{where: { id: accountExpense, name: expense?.paymentMethod}})
+  };
 
-    if(total && amountExpense){
-    const newTotal = total + amountExpense
-    await BalanceModel.update({ total: newTotal }, { where: { id: balanceExpense } });
-    }
+  const balanceToUpdate = await BalanceModel.findOne({where: { id: accountToUpdate?.userId}})
 
-    const finalBalance = await BalanceModel.findOne({
-    where: { id: balanceExpense},
-    include:[ ExpenseModel ]
-    })
+  const totalBalance = balanceToUpdate?.total;
+
+  if(totalBalance && expense?.amount){
+    const newTotal = totalBalance + expense?.amount
+    await BalanceModel.update({ total: newTotal }, { where: { id: accountToUpdate?.userId }});
+  }
+
+  const finalBalance = await BalanceModel.findOne({
+    where: { id: accountToUpdate?.userId },
+    include: [{
+      model: AccountModel,
+      include: [ExpenseModel]
+    }]
+  })
 
     return finalBalance;
 };
 
+
+export const reverseDeleteExpense= async (id: number) =>{
+  
+  const expense = await ExpenseModel.findOne({where: {id: id}});
+
+  await ExpenseModel.update({deletedExpense: false}, {where: {id: id}});
+
+  const accountExpense = expense?.accountId;
+
+  const accountToUpdate = await AccountModel.findOne({where: { id: accountExpense}});
+
+  const totalAccount = accountToUpdate?.total;
+
+  if(totalAccount && expense?.amount){
+    const newTotal = totalAccount - expense?.amount
+    await AccountModel.update({total: newTotal},{where: { id: accountExpense, name: expense?.paymentMethod}})
+  };
+
+  const balanceToUpdate = await BalanceModel.findOne({where: { id: accountToUpdate?.userId}})
+
+  const totalBalance = balanceToUpdate?.total;
+
+  if(totalBalance && expense?.amount){
+    const newTotal = totalBalance - expense?.amount
+    await BalanceModel.update({ total: newTotal }, { where: { id: accountToUpdate?.userId }});
+  }
+
+  const finalBalance = await BalanceModel.findOne({
+    where: { id: accountToUpdate?.userId },
+    include: [{
+      model: AccountModel,
+      include: [ExpenseModel]
+    }]
+  })
+
+    return finalBalance;
+};
 

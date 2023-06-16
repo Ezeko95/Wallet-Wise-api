@@ -45,7 +45,7 @@ export const postMovement = async (req: Request, res: Response) => {
         
           const infoIncome: IIncome = {
             ...movement,
-            balanceId: +id
+            ["balanceId"]: +id
           }
           const newIncome= await createIncome(infoIncome);
           res.status(200).send(newIncome);

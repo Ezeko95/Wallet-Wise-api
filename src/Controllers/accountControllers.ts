@@ -10,22 +10,32 @@ interface IAccount extends AccountModel {
 export const createAccount = async (id: number, account: IAccount) => {
 
     try {
+        const repeatAccount = await AccountModel.findOne({
+            where: {name: account.name, userId : id}
+        })
 
-        //const user = await UserModel.findOne({ where: { id } });
-        
-        //if (!user) {
-          //  throw new Error('Usuario no encontrado');
-        //}
+        if(repeatAccount?.name.length !== undefined){
+            throw new Error("existe una cuenta con ese nombre") 
+        } else {
 
-        const newAccount = await AccountModel.create(account);
-
+        const newAccount = await AccountModel.create(account)
+            
         const balanceUser = await BalanceModel.findOne({ where: { id } });
 
         if (!balanceUser) {
             throw new Error('Balance del usuario no encontrado');
         }
 
+        const total = account.total
+        
         await balanceUser.$add("account", newAccount );
+
+        const totalBalance= balanceUser?.total;
+
+        if(totalBalance !== undefined){
+            const newTotalBalance = totalBalance + total;
+            await BalanceModel.update({total: newTotalBalance},{where: { id: id}})
+        }
 
         const theuser = await BalanceModel.findOne({ 
             where: { id: id},
@@ -33,6 +43,7 @@ export const createAccount = async (id: number, account: IAccount) => {
         })
 
         return theuser
+        }
 
     } catch (error) {
 
