@@ -8,7 +8,7 @@ export const getIncomeDateFilter = async(req: Request, res: Response) =>{
     try {
         const filter= await incomeDateFilter(date, +id);
 
-       if(filter?.length === 0) throw Error('Empty filter');
+    //    if(filter?.length === 0) throw Error('Empty filter');
         
         res.status(200).send(filter);
     } catch (error) {
@@ -30,7 +30,7 @@ export const getIncomeAccountFilter = async(req: Request, res: Response) =>{
     try {
         const filter= await incomeAccountFilter(account, +id);
 
-       if(filter?.length === 0) throw Error('Empty filter');
+    //    if(filter?.length === 0) throw Error('Empty filter');
         
         res.status(200).send(filter);
         

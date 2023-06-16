@@ -3,21 +3,21 @@ import { getAllIdExpense } from "./expenseControllers"
 import { IAccount, IDate } from "../../Handlers/expenseClassification/filterHandler";
 
 export const expenseDateFilter = async (date: IDate, id:number) => {
-    const arrayExpense = await getAllIdExpense(id)
+    // const arrayExpense = await getAllIdExpense(id)
     
-    const expenseFilter = arrayExpense?.expense.filter( e => e.createdAt.toISOString().split("T")[0] === date.date);
+    // const expenseFilter = arrayExpense?.expense.filter( e => e.createdAt.toISOString().split("T")[0] === date.date);
     
-    return expenseFilter;
+    // return expenseFilter;
 }
 
 export const expenseAccountFilter = async (account : IAccount, id:number) => {
-    const arrayExpense= await getAllIdExpense(id);
+    // const arrayExpense= await getAllIdExpense(id);
 
-    //arrayExpense?.expense.map( e => console.log('e.paymet', e.paymentMethod))
-    console.log("Soy el console log",account.account)
-    const expenseFilter = arrayExpense?.expense.filter( e => e.paymentMethod === account.account);
+    // //arrayExpense?.expense.map( e => console.log('e.paymet', e.paymentMethod))
+    // console.log("Soy el console log",account.account)
+    // const expenseFilter = arrayExpense?.expense.filter( e => e.paymentMethod === account.account);
     
-    return expenseFilter;
+    // return expenseFilter;
 }
 
 // {

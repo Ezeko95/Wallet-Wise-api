@@ -7,7 +7,7 @@ export const createExpense = async (infoExpense: IExpense) => {
     await ExpenseModel.create(infoExpense);
 
   //encuentra el balance al cual hace referencia, y añade el gasto
-    const balanceToChange = await BalanceModel.findOne({where: { id: infoExpense.balanceId}})
+    const balanceToChange = await BalanceModel.findOne({where: { id: infoExpense.accountId}})
 
   //guardar en una constante el balance total actual
     const total = balanceToChange?.total
@@ -15,12 +15,12 @@ export const createExpense = async (infoExpense: IExpense) => {
   //condicional para aplicarle al balance total, el gasto realizado
     if(total !== undefined){
     const newTotal = total - infoExpense.amount
-    await BalanceModel.update({ total: newTotal }, { where: { id: infoExpense.balanceId } });
+    await BalanceModel.update({ total: newTotal }, { where: { id: infoExpense.accountId } });
     }
 
   //guarda en una variable el balance, con sus gastos para retornarlo
     const finalBalance = await BalanceModel.findOne({
-    where: { id: infoExpense.balanceId},
+    where: { id: infoExpense.accountId},
     include:[ ExpenseModel ]
     })
 
@@ -42,7 +42,7 @@ export const deleteExpense = async (id: number) =>{
 
     const expense = await ExpenseModel.findOne({where: {id: id}});
 
-    const balanceExpense = expense?.balanceId
+    const balanceExpense = expense?.accountId
 
     const balanceToUpdate = await BalanceModel.findOne({where: { id: balanceExpense}})
 

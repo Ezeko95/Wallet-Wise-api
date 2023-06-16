@@ -11,7 +11,7 @@ export const getExpenseDateFilter = async(req: Request, res: Response) =>{
     try {
         const filter = await expenseDateFilter(date, +id);
         
-        if(filter?.length === 0) throw Error('Empty filter');
+        // if(filter?.length === 0) throw Error('Empty filter');
 
         res.status(200).send(filter)
     } catch (error) {
@@ -34,7 +34,7 @@ export const getExpenseAccountFilter = async(req: Request, res: Response) =>{
     try {
         const filter= await expenseAccountFilter(account, +id);
         
-        if(filter?.length === 0) throw Error('Empty filter');
+        // if(filter?.length === 0) throw Error('Empty filter');
         
         res.status(200).send(filter);
     } catch (error) {

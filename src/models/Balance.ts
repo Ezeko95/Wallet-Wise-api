@@ -8,8 +8,7 @@ import {
     BelongsTo,
     ForeignKey
     } from 'sequelize-typescript';
-import { Expense } from './Expense';
-import { Income } from './Income';
+import { Accounts } from './Accounts';
 import { User } from './User';
 
   @Table
@@ -34,17 +33,14 @@ import { User } from './User';
     @Column
     updatedAt!: Date;
 
-    @HasMany(()=> Expense)
-    expense!: Expense[];
-
-    @HasMany(()=> Income)
-    income!: Income[];
-
+    @HasMany(() => Accounts) // Especifica la clave foránea 'balanceId'
+    accounts!: Accounts[];
+  
     @ForeignKey(() => User)
     @Column
     userId!: number;
-
-    @BelongsTo(()=> User)
+  
+    @BelongsTo(() => User)
     user!: User;
   };
 
