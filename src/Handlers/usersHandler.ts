@@ -5,6 +5,7 @@ import {
   getOneUser,
   updateUser,
 } from '../Controllers/usersControllers';
+import { IUser } from '../Controllers/usersControllers';
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -19,11 +20,11 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 export const postUser = async (req: Request, res: Response) => {
-  const user = req.body;
+  const user: IUser = req.body;
   try {
-    if(!user.name || !user.email) throw Error('Missing data');
-    const newUser= await createUser(user, {userId:0});
-    
+    if (!user.name || !user.email) throw Error('Missing data');
+    const newUser = await createUser(user, { userId: 0 });
+
     res.status(200).send(newUser);
   } catch (error: any) {
     console.error('Error ocurred while creating user', error);
