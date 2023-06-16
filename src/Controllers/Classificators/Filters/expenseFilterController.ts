@@ -1,24 +1,30 @@
-import { Expense as ExpenseModel } from "../../../models/Expense"
-import { getAllIdExpense } from "../../expenseControllers"
-import { IAccount, IDate } from "../../../Handlers/Classificators/Filters/expenseFilterHandler";
+import { Expense as ExpenseModel } from '../../../models/Expense';
+import { getAllIdExpense } from '../../expenseControllers';
+import {
+  IAccount,
+  IDate,
+} from '../../../Handlers/Classificators/Filters/expenseFilterHandler';
 
-export const expenseDateFilter = async (date: IDate, id:number) => {
-    // const arrayExpense = await getAllIdExpense(id)
-    
-    // const expenseFilter = arrayExpense?.expense.filter( e => e.createdAt.toISOString().split("T")[0] === date.date);
-    
-    // return expenseFilter;
-}
+export const expenseDateFilter = async (date: IDate, id: number) => {
+  const arrayAccount = await getAllIdExpense(id);
 
-export const expenseAccountFilter = async (account : IAccount, id:number) => {
-    // const arrayExpense= await getAllIdExpense(id);
+  //const expenseFilter = arrayAccount.filter( e => e.createdAt.toISOString().split("T")[0] === date.date);
+  const expenseFilter = arrayAccount?.filter((e) =>
+    e.expense.filter(
+      (e) => e.createdAt.toISOString().split('T')[0] === date.date
+    )
+  );
+  console.log('fecha', date.date);
+  return expenseFilter.map((e) => e.expense);
+};
 
-    // //arrayExpense?.expense.map( e => console.log('e.paymet', e.paymentMethod))
-    // console.log("Soy el console log",account.account)
-    // const expenseFilter = arrayExpense?.expense.filter( e => e.paymentMethod === account.account);
-    
-    // return expenseFilter;
-}
+export const expenseAccountFilter = async (account: IAccount, id: number) => {
+  // const arrayExpense= await getAllIdExpense(id);
+  // //arrayExpense?.expense.map( e => console.log('e.paymet', e.paymentMethod))
+  // console.log("Soy el console log",account.account)
+  // const expenseFilter = arrayExpense?.expense.filter( e => e.paymentMethod === account.account);
+  // return expenseFilter;
+};
 
 // {
 // 	"id": 1,

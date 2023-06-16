@@ -1,20 +1,27 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import { getBalance } from '../Handlers/movementsHandler';
-import { getBalanceDateFilter, getBalanceAccountFilter } from '../Handlers/Classificators/Filters/balanceFilterHandler';
-import { getBalanceDateOrder, getBalanceAmountOrder, getBalanceAlphaOrder } from '../Handlers/Classificators/Orders/balanceOrderHandler';
+import {
+  getBalanceDateFilter,
+  getBalanceAccountFilter,
+} from '../Handlers/Classificators/Filters/balanceFilterHandler';
+import {
+  getBalanceDateOrder,
+  getBalanceAmountOrder,
+  getBalanceAlphaOrder,
+} from '../Handlers/Classificators/Orders/balanceOrderHandler';
 
-const balanceRouter : Router = Router();
+const balanceRouter: Router = Router();
 
-    balanceRouter.get('/dateFilter/:id', getBalanceDateFilter);
+balanceRouter.get('/:id', getBalance);
 
-    balanceRouter.get('/accountFilter/:id', getBalanceAccountFilter);
+balanceRouter.get('/dateFilter/:id', getBalanceDateFilter);
 
-    balanceRouter.get('/alphaOrder', getBalanceAlphaOrder)
+balanceRouter.get('/accountFilter/:id', getBalanceAccountFilter);
 
-    balanceRouter.get('/amountOrder', getBalanceAmountOrder)
+balanceRouter.get('/alphaOrder', getBalanceAlphaOrder);
 
-    balanceRouter.get('/dateOrder', getBalanceDateOrder)
+balanceRouter.get('/amountOrder', getBalanceAmountOrder);
 
-    balanceRouter.get('/:id', getBalance);
+balanceRouter.get('/dateOrder', getBalanceDateOrder);
 
 export default balanceRouter;
