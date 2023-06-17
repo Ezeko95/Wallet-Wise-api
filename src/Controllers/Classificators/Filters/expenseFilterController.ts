@@ -6,21 +6,29 @@ import {
 } from '../../../Handlers/Classificators/Filters/expenseFilterHandler';
 
 export const expenseDateFilter = async (date: IDate, id: number) => {
+  
   const arrayAccount = await getAllIdExpense(id);
-
-  //const expenseFilter = arrayAccount.filter( e => e.createdAt.toISOString().split("T")[0] === date.date);
-  const expenseFilter = arrayAccount?.filter((e) =>
+  
+  const expenseFilter = arrayAccount?.map((e) =>
     e.expense.filter(
       (e) => e.createdAt.toISOString().split('T')[0] === date.date
     )
   );
-  console.log('fecha', date.date);
-  return expenseFilter.map((e) => e.expense);
+  
+  const newArray = []
+
+  for (const element in expenseFilter) {
+    if (expenseFilter[element].length > 0)
+      newArray.push(expenseFilter[element]);
+  }
+
+  if (!newArray.length) return 'No hay gastos en la fecha indicada';
+  return newArray;
 };
 
 export const expenseAccountFilter = async (account: IAccount, id: number) => {
   // const arrayExpense= await getAllIdExpense(id);
-  // //arrayExpense?.expense.map( e => console.log('e.paymet', e.paymentMethod))
+  // //arrayExpense?.expense.map( e => console.log('e.paymet', e.paymentMethod))npm run de
   // console.log("Soy el console log",account.account)
   // const expenseFilter = arrayExpense?.expense.filter( e => e.paymentMethod === account.account);
   // return expenseFilter;
@@ -57,3 +65,4 @@ export const expenseAccountFilter = async (account: IAccount, id: number) => {
 // 		}
 // 	]
 // }
+
