@@ -5,21 +5,18 @@ import { IDate } from "../../../Handlers/Classificators/Filters/expenseFilterHan
 
 export const dateBalance = async (date: IDate, id: number) =>{
 
-    // const expenseDate = await expenseDateFilter(date, id);
-    // const incomeDate = await incomeDateFilter(date, id);
+    const expenseDate = await expenseDateFilter(date, id);
+    const incomeDate = await incomeDateFilter(date, id);
 
-    // console.log('estoy en balance', expenseDate)
-    
-    // if(expenseDate?.length===0 && incomeDate?.length===0) return 'Empty filter';
-    // else if(expenseDate?.length===0) return incomeDate;
-    // else if(incomeDate?.length===0) return expenseDate;
-    // else if(expenseDate!==undefined && expenseDate?.length!==0 && incomeDate!==undefined && incomeDate?.length!==0) return [...incomeDate, ...expenseDate]
+    if(expenseDate?.length===0 && incomeDate?.length===0) return 'Empty filter';
+    else if(expenseDate?.length===0) return incomeDate;
+    else if(incomeDate?.length===0) return expenseDate;
+    else if(expenseDate!==undefined && expenseDate?.length!==0 && incomeDate!==undefined && incomeDate?.length!==0) return [...incomeDate, ...expenseDate]
     
 }
 
 export const accountBalance = (account:string) =>{
-  
-  
+
 }
 
 // {
