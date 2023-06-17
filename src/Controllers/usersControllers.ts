@@ -1,11 +1,13 @@
 import { User as UserModel } from '../models/User';
 import { Balance as BalanceModel } from '../models/Balance';
 import { sequelize } from '../db';
+import * as bcrypt from "bcrypt";
 
 export interface IUser extends UserModel {
   name: string;
   email: string;
   picture: string;
+  password: string;
   premium: boolean;
   balance: BalanceModel;
 }
@@ -14,6 +16,9 @@ export const createUser = async (user: IUser, balanceData: any) => {
   const transaction = await sequelize.transaction();
 
   try {
+    const hashedPassword = bcrypt.hashSync(user.password, 10); // hasheo de password
+    user.password = hashedPassword;
+
     const newUser = await UserModel.create(user, { transaction });
 
     balanceData.userId = newUser.id;

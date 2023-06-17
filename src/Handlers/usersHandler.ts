@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
+import { User as UserModel} from "../models/User";
+import config from "../../lib/config";
+import jwt from "jsonwebtoken";
 import {
   createUser,
   getAllUsers,
   getOneUser,
   updateUser,
 } from '../Controllers/usersControllers';
-import { IUser } from '../Controllers/usersControllers';
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -54,5 +56,29 @@ export const getUser = async (req: Request, res: Response) => {
     res
       .status(400)
       .json({ message: 'Failed to fecth users. Try again later...' });
+  }
+};
+
+/////////////////LOGIN//////////////////////
+
+interface IUser extends UserModel {
+  email: string;
+  password: string;
+}
+
+
+export const loginUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  const user = await UserModel.findOne({ where: { email } });
+  if (!user) {
+    return res.json({ msg: "Please enter a valid username" });
+  }
+  const accessToken = jwt.sign({ user, email: user.email }, config.secret, {
+    expiresIn: "1h",
+  });
+  res.json({ msg: "User logged in!", accessToken });
+  try {
+  } catch (error) {
+    res.status(400).json({ message: "Failed to login. Check credentials" });
   }
 };
