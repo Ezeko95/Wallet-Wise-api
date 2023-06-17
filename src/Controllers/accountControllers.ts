@@ -33,7 +33,7 @@ export const createAccount = async (id: number, account: IAccount) => {
         const totalBalance= balanceUser?.total;
 
         if(totalBalance !== undefined){
-            const newTotalBalance = totalBalance + total;
+            const newTotalBalance = +totalBalance + +total;
             await BalanceModel.update({total: newTotalBalance},{where: { id: id}})
         }
 

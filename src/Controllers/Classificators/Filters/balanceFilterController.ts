@@ -1,7 +1,10 @@
 import { expenseDateFilter } from "./expenseFilterController";
 import { incomeDateFilter } from "./incomeFilterController";
 import { IDate } from "../../../Handlers/Classificators/Filters/expenseFilterHandler";
-
+import { IAccount } from "../../../Handlers/Classificators/Filters/incomeFilterHandler";
+import { Account as AccountModel } from "../../../models/Account";
+import { Expense as ExpenseModel } from "../../../models/Expense";
+import { Income as IncomeModel } from "../../../models/Income";
 
 export const dateBalance = async (date: IDate, id: number) =>{
 
@@ -15,8 +18,12 @@ export const dateBalance = async (date: IDate, id: number) =>{
     
 }
 
-export const accountBalance = (account:string) =>{
-
+export const accountBalance = async (account:IAccount, id: number) =>{
+    const expenseAccount= await AccountModel.findOne({
+        where: { userId: id, name: account.account},
+        include:[ExpenseModel, IncomeModel]
+      });
+       return expenseAccount;
 }
 
 // {

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { incomeDateFilter, incomeAccountFilter } from '../../../Controllers/Classificators/Filters/incomeFilterController';
+import { incomeDateFilter, incomeAccountFilter, incomeTypeFilter } from '../../../Controllers/Classificators/Filters/incomeFilterController';
 import { IDate } from './expenseFilterHandler';
 
 export const getIncomeDateFilter = async(req: Request, res: Response) =>{
@@ -42,3 +42,26 @@ export const getIncomeAccountFilter = async(req: Request, res: Response) =>{
 
     }
 }
+
+export interface IType {
+    type: string;
+}
+    
+export const getIncomeTypeFilter = async (req: Request, res: Response) => {
+    const type: IType = req.body;
+    const { id } = req.params;
+  
+    try {
+      const filter = await incomeTypeFilter(type, +id);
+  
+       if(filter?.length === 0) throw Error('Empty filter');
+  
+      res.status(200).send(filter);
+    } catch (error) {
+      console.error('Error ocurred while filter expenses...', error);
+      res.status(400).json({
+        message: 'Failed to filter expenses by accounts. Try again later...',
+      });
+    }
+};
+  

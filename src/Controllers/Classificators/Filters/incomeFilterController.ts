@@ -1,5 +1,8 @@
 import { getAllIdIncomes } from "../../incomeControllers"
 import { IAccount , IDate} from "../../../Handlers/Classificators/Filters/expenseFilterHandler";
+import { Account as AccountModel } from "../../../models/Account";
+import { Income as IncomeModel } from "../../../models/Income";
+import { IType } from "../../../Handlers/Classificators/Filters/incomeFilterHandler";
 
 export const incomeDateFilter = async (date:IDate, id:number) => {
 
@@ -17,47 +20,35 @@ export const incomeDateFilter = async (date:IDate, id:number) => {
             newArray.push(incomeFilter[element]);
     }
     
-    if (!newArray.length) return 'No hay ingresos en la fecha indicada';
+    if (!newArray.length) return 'There is no income on that date';
     return newArray;
 }
 
 export const incomeAccountFilter = async (account : IAccount, id:number) => {
     
-    // const arrayIncome= await getAllIdIncomes(id);
-    
-    // const incomeFilter = arrayIncome?.income.filter( e => e.account === account.account);
-
-    // return incomeFilter;
+    const incomeAccount= await AccountModel.findOne({
+        where: { userId: id, name: account.account},
+        include:[IncomeModel]
+      });
+       return incomeAccount;
 }
 
-// [
-// 	{
-// 		"id": 1,
-// 		"name": "banco",
-// 		"total": 10010,
-// 		"userId": 1,
-// 		"createdAt": "2023-06-16T22:35:03.283Z",
-// 		"updatedAt": "2023-06-16T22:35:35.125Z",
-// 		"income": [
-// 			{
-// 				"id": 1,
-// 				"type": "regalo",
-// 				"account": "banco",
-// 				"amount": 10,
-// 				"deletedIncome": false,
-// 				"createdAt": "2023-06-16T22:35:35.106Z",
-// 				"updatedAt": "2023-06-16T22:35:35.120Z",
-// 				"accountId": 1
-// 			}
-// 		]
-// 	},
-// 	{
-// 		"id": 2,
-// 		"name": "efectivo",
-// 		"total": 5000,
-// 		"userId": 1,
-// 		"createdAt": "2023-06-16T22:35:15.753Z",
-// 		"updatedAt": "2023-06-16T22:35:27.599Z",
-// 		"income": []
-// 	}
-// ]
+export const incomeTypeFilter = async (type:IType, id:number) => {
+
+    const arrayAccount = await getAllIdIncomes(id);
+
+    const incomeFilter = arrayAccount?.map((e) =>
+        e.income.filter(
+            (e) => e.type === type.type
+        )
+    );
+    const newArray = []
+
+    for (const element in incomeFilter) {
+        if (incomeFilter[element].length > 0)
+            newArray.push(incomeFilter[element]);
+    }
+    
+    if (!newArray.length) return 'There is no income with that type';
+    return newArray;
+}
