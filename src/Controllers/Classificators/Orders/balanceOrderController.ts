@@ -1,139 +1,44 @@
+import { expenseAmountOrder, expenseDateOrder } from "./expenseOrderController";
+import { incomeAmountOrder, incomeDateOrder } from "./incomeOrderController";
+import { IAmount, IDate } from "../../../Handlers/Classificators/Orders/balanceOrderHandler";
 
+export const balanceAmountOrder =async(amount:IAmount, id:number)=>{
+  const expense = await expenseAmountOrder(amount, id)
+  const income = await incomeAmountOrder(amount, id)
 
+  const balance = [...expense, ...income];
+  console.log("entre a balanceAmountOrder")
+  const results = (amount.amount.toLowerCase() === "asc") ? balance.sort((a: any, b: any)=>{
+      if(a.amount> b.amount) {return 1}
+      if(a.amount< b.amount) {return -1}
+      return 0;
+  })
+  :  balance.sort((a: any, b: any)=>{
+      if(a.amount> b.amount) {return -1}
+      if(a.amount< b.amount) {return 1}
+      return 0;
+  })
 
-///// EXPENSE **delete**
-//export const deleteExpense = async (id: number) =>{
+  return results;
+};
 
-  //const expense = await ExpenseModel.findOne({where: {id: id}});
+export const balanceDateOrder= async(date: IDate, id:number)=>{
+  const expense = await expenseDateOrder(date, id)
+  const income = await incomeDateOrder(date, id)
 
-  //const balanceExpense = expense?.balanceId
+  const balance = [...expense, ...income];
+  console.log("entre a balanceDateOrder")
+  const results = (date.date.toLowerCase() === "asc") ? 
+        balance.sort((a: any, b: any)=>{
+            if(new Date(a.cretedAt) > new Date(b.createdAt)) {return 1}
+            if(new Date(a.createdAt) < new Date(b.createdAt)) {return -1}
+            return 0;
+        })
+        :  balance.sort((a: any, b: any)=>{
+            if(new Date(a.createdAt) > new Date(b.createdAt)) {return -1}
+            if(new Date(a.createdAt) < new Date(b.createdAt)) {return 1}
+            return 0;
+  })
 
-  //const balanceToUpdate = await BalanceModel.findOne({where: { id: balanceExpense}})
-  //--->const accountToUpdate = await AccounteModel.findOne({where: { userid: balanceExpense}})
-
-  // const amountExpense = expense?.amount
-
-  // await ExpenseModel.update({deletedExpense: true}, {where: {id: id}});
-
-  // const total = balanceToUpdate?.total
-
-  // if(total && amountExpense){
-  // const newTotal = total + amountExpense
-  // await BalanceModel.update({ total: newTotal }, { where: { id: balanceExpense } });
-  // }
-
-    // const totalAccount= accountToUpdate?.total
-    // if(totalAccount && amountExpense){
-    // const newTotal = total + amountExpense
-    // await AccountModel.update({amount: newTotal},{where: { userId: balanceExpense, name: expense?.paymentMethod}})
-    // }
-
-  //posibles return
-    // const finish= await BalanceModel.findOne({where: { id: balanceExpense}, include: [accountModel]})//ver como incluirle el modelo de expense tamb
-    // const finish= await AccountModel.findOne({where: { userId: balanceExpense}, include: [ExpenseModel]]})
-    
-    //return finish;
-//};
-
-///// INCOME **delete**
-// export const deleteIncome = async (id: number) =>{
-
-//   const income = await IncomeModel.findOne({where: {id: id}});
-
-//   const balanceIncome = income?.balanceId
-
-//   const balanceToUpdate = await BalanceModel.findOne({where: { id: balanceIncome}})
-  //--->const accountToUpdate = await AccounteModel.findOne({where: { userid: balanceIncome}})
-
-  // const amountIncome = income?.amount
-
-  // await IncomeModel.update({deletedIncome: true}, {where: {id: id}});
-
-  // const total = balanceToUpdate?.total
-
-  // if(total && amountIncome){
-  //     const newTotal = total - amountIncome
-  //     await BalanceModel.update({ total: newTotal }, { where: { id: balanceIncome } });
-  // }
-
-  //const totalIncome= accountToUpdate?.total
-  // if(totalIncome && amountIncome){
-    // const newTotal = total - amountIncome
-    // await AccountModel.update({amount: newTotal},{where: { userId: balanceIncome, name: income?.account}})
-    // }
-
-  //posibles return
-    // const finish= await BalanceModel.findOne({where: { id: balanceIncome}, include: [accountModel]})//ver como incluirle el modelo de expense tamb
-    // const finish= await AccountModel.findOne({where: { userId: balanceIncome}, include: [IncomeModel]]})
-    
-    //return finish;
-//};
-
-/////EXPENSE RETURN EL DELETE
-//export const returnExpense = async (id: number) =>{
-
-  //const expense = await ExpenseModel.findOne({where: {id: id}});
-
-  //const balanceExpense = expense?.balanceId
-
-  //const balanceToUpdate = await BalanceModel.findOne({where: { id: balanceExpense}})
-  //--->const accountToUpdate = await AccounteModel.findOne({where: { userid: balanceExpense}})
-
-  // const amountExpense = expense?.amount
-
-  // await ExpenseModel.update({deletedExpense: false}, {where: {id: id}});
-
-  // const total = balanceToUpdate?.total
-
-  // if(total && amountExpense){
-  // const newTotal = total - amountExpense
-  // await BalanceModel.update({ total: newTotal }, { where: { id: balanceExpense } });
-  // }
-
-    // if(total && amountExpense){
-    // const newTotal = total - amountExpense
-    // await AccountModel.update({amount: newTotal},{where: { userId: balanceExpense, name: expense?.paymentMethod}})
-    // }
-
-  //posibles return
-    // const finish= await BalanceModel.findOne({where: { id: balanceExpense}, include: [accountModel]})//ver como incluirle el modelo de expense tamb
-    // const finish= await AccountModel.findOne({where: { userId: balanceExpense}, include: [ExpenseModel]]})
-    
-    //return finish;
-//};
-
-
-////// INCOME RETURN DELETE
-// export const deleteIncome = async (id: number) =>{
-
-//   const income = await IncomeModel.findOne({where: {id: id}});
-
-//   const balanceIncome = income?.balanceId
-
-//   const balanceToUpdate = await BalanceModel.findOne({where: { id: balanceIncome}})
-  //--->const accountToUpdate = await AccounteModel.findOne({where: { userid: balanceIncome}})
-
-  // const amountIncome = income?.amount
-
-  // await IncomeModel.update({deletedIncome: false}, {where: {id: id}});
-
-  // const total = balanceToUpdate?.total
-
-  // if(total && amountIncome){
-  //     const newTotal = total + amountIncome
-  //     await BalanceModel.update({ total: newTotal }, { where: { id: balanceIncome } });
-  // }
-
-  //const totalIncome= accountToUpdate?.total
-  // if(totalIncome && amountIncome){
-    // const newTotal = total + amountIncome
-    // await AccountModel.update({amount: newTotal},{where: { userId: balanceIncome, name: income?.account}})
-    // }
-
-  //posibles return
-    // const finish= await BalanceModel.findOne({where: { id: balanceIncome}, include: [accountModel]})//ver como incluirle el modelo de expense tamb
-    // const finish= await AccountModel.findOne({where: { userId: balanceIncome}, include: [IncomeModel]]})
-    
-    //return finish;
-//};
-
+    return results;
+};
