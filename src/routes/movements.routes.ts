@@ -23,7 +23,7 @@ import {
 import {
   getBalanceDateOrder,
   getBalanceAmountOrder,
-  getBalanceAlphaOrder
+//  getBalanceAlphaOrder
 } from '../Handlers/Classificators/Orders/balanceOrderHandler';
 import {
   getExpenseAlphaOrder,
@@ -75,6 +75,6 @@ movementRouter.get('/incomeAlphaOrder/:id', getIncomeAlphaOrder);
 
 movementRouter.get('/incomeAmountOrder/:id', getIncomeAmountOrder);
 
-movementRouter.get('/incomeDatetOrder/:id', getIncomeDateOrder);
+movementRouter.get('/incomeDateOrder/:id', getIncomeDateOrder);
 
 export default movementRouter;
