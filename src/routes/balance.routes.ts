@@ -7,7 +7,6 @@ import {
 import {
   getBalanceDateOrder,
   getBalanceAmountOrder,
-  getBalanceAlphaOrder,
 } from '../Handlers/Classificators/Orders/balanceOrderHandler';
 
 const balanceRouter: Router = Router();
@@ -18,10 +17,8 @@ balanceRouter.get('/dateFilter/:id', getBalanceDateFilter);
 
 balanceRouter.get('/accountFilter/:id', getBalanceAccountFilter);
 
-balanceRouter.get('/alphaOrder', getBalanceAlphaOrder);
+balanceRouter.get('/amountOrder/:id', getBalanceAmountOrder);
 
-balanceRouter.get('/amountOrder', getBalanceAmountOrder);
-
-balanceRouter.get('/dateOrder', getBalanceDateOrder);
+balanceRouter.get('/dateOrder/:id', getBalanceDateOrder);
 
 export default balanceRouter;
