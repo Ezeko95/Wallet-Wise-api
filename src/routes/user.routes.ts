@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getUser, getUsers, postUser, putUser, loginUser } from '../Handlers/usersHandler';
+import { getUser, getUsers, postUser, putUser, handleLoginUser } from '../Handlers/usersHandler';
 
 const userRouter: Router = Router();
 
@@ -11,6 +11,6 @@ const userRouter: Router = Router();
 
     userRouter.put('/:id', putUser);
 
-    userRouter.post("/login", loginUser)
+    userRouter.post("/login", handleLoginUser)
 
 export default userRouter;
