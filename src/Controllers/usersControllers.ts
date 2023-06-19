@@ -3,32 +3,31 @@ import { Balance as BalanceModel } from "../models/Balance";
 import { sequelize } from "../db";
 import * as bcrypt from "bcrypt"; // para hashear passwords
 import * as jwt from "jsonwebtoken"; // token generator
-import * as nodemailer from "nodemailer" // servicio de email automatico
-import * as fs from "fs" // template mail HTML carpeta root
+import * as nodemailer from "nodemailer"; // servicio de email automatico
+import * as fs from "fs"; // template mail HTML carpeta root
 import config from "../../lib/config";
 
 // Envio de emails NO TOCAR!!!
-async function sendEmail(email:string) { 
-// Transporter para enviar mails
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  auth: {
-    user: config.gmail, 
-    pass: config.pass, // 
-  },
-});
-
-const htmlTemplate = fs.readFileSync("newsLetter.html", "utf-8");
-// send mail with defined transport object
-let info = await transporter.sendMail({
-  from: "<walletwise23@gmail.com>", 
-  to: email, 
-  subject: "Thank you for subscribing to WalletWise", 
-  text: "Hola TyperEscripter", 
-  html: htmlTemplate, 
-});
-}
+  // Transporter para enviar mails
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    auth: {
+      user: config.gmail,
+      pass: config.pass, //
+    },
+  });
+  // Emails HTML Templates
+  const premiumHtml = fs.readFileSync("premiumEmail.html", "utf-8");
+  const welcomeHtml = fs.readFileSync("newsLetter.html", "utf-8");
+  // send mail with defined transport object
+  // let info = transporter.sendMail({
+  //   from: "<walletwise23@gmail.com>",
+  //   to: user.email,
+  //   subject: "Thank you for subscribing to WalletWise",
+  //   text: "Hola TyperEscripter",
+  //   html: welcomeHtml,
+  // });
 // interface para el model del User
 export interface IUser extends UserModel {
   name: string;
@@ -39,7 +38,7 @@ export interface IUser extends UserModel {
   balance: BalanceModel;
 }
 
-// Registro del usuario
+//////////// Registro del usuario ////////////////
 export const createUser = async (user: IUser, balanceData: any) => {
   const transaction = await sequelize.transaction();
 
@@ -67,7 +66,13 @@ export const createUser = async (user: IUser, balanceData: any) => {
     const accessToken = generateAccessToken(newUser);
 
     // Se envia al usuario email de bienvenida
-    sendEmail(user.email)
+    let info = transporter.sendMail({
+      from: "<walletwise23@gmail.com>",
+      to: user.email,
+      subject: "Thank you for subscribing to WalletWise",
+      text: "Hola TyperEscripter",
+      html: welcomeHtml,
+    });
 
     return { newUser, balance, accessToken };
   } catch (error) {
@@ -77,7 +82,7 @@ export const createUser = async (user: IUser, balanceData: any) => {
   }
 };
 
-// Login del usuario
+/////////////// Login del usuario  /////////////////////
 export const loginUser = async (email: string, password: string) => {
   // Busca el mail en la base de datos
   const user = await UserModel.findOne({ where: { email } });
@@ -98,6 +103,27 @@ export const loginUser = async (email: string, password: string) => {
   return accessToken;
 };
 
+////////// Cambiar usuario a premium //////////////////
+export const updateUser = async (id: number) => {
+  const user = await UserModel.findByPk(id);
+  if (!user) {
+    throw new Error("No user found");
+  }
+  const toggle = user.premium;
+  UserModel.update({ premium: !toggle }, { where: { id } });
+
+  //Email al usuario
+  let info = transporter.sendMail({
+    from: "<walletwise23@gmail.com>",
+    to: user.email,
+    subject: "Thank you for subscribing to WalletWise",
+    text: "Hola TyperEscripter",
+    html: premiumHtml,
+  });
+
+  return `the suscription has changed from ${toggle} succesfully to ${!toggle}`;
+};
+
 export const getAllUsers = async () => {
   const users = await UserModel.findAll({
     include: [{ model: BalanceModel, attributes: ["total"] }],
@@ -113,16 +139,4 @@ export const getOneUser = async (id: number) => {
   if (!user) throw new Error("No user found");
 
   return user;
-};
-
-// Cambiar usuario a premium
-export const updateUser = async (id: number) => {
-  const user = await UserModel.findByPk(id);
-  if (!user) {
-    throw new Error("No user found");
-  }
-  const toggle = user.premium;
-  UserModel.update({ premium: !toggle }, { where: { id } });
-
-  return `the suscription has changed from ${toggle} succesfully to ${!toggle}`;
 };
