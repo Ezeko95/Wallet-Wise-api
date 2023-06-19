@@ -7,10 +7,10 @@ const userRouter: Router = Router();
 
     userRouter.get('/:id', getUser);
 
-    userRouter.post('/', postUser);
-
     userRouter.put('/:id', putUser);
+    
+    userRouter.post('/register', postUser); // Registro de usuarios
 
-    userRouter.post("/login", handleLoginUser)
+    userRouter.post("/login", handleLoginUser) // Login de usuarios
 
 export default userRouter;
