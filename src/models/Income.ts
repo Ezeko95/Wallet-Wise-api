@@ -7,9 +7,9 @@ import {
     ForeignKey,
     BelongsTo
 } from 'sequelize-typescript';
-import { Balance } from './Balance';
+import { Account } from './Account';
 
-    @Table
+@Table
 export class Income extends Model<Income> {
     @Column({
         primaryKey: true,
@@ -41,10 +41,10 @@ export class Income extends Model<Income> {
     @Column
     updatedAt!: Date;
 
-    @ForeignKey(() => Balance)
+    @ForeignKey(() => Account)
     @Column
-    balanceId!: number;
+    accountId!: number;
 
-    @BelongsTo(() => Balance)
-    balance!: Balance;
+    @BelongsTo(() => Account)
+    Account!: Account;
 }
