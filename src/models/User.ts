@@ -33,10 +33,10 @@ export class User extends Model<User> {
   })
   password!: string;
 
-  @Column({
-    allowNull: false,
-  })
-  picture!: string;
+  // @Column({
+  //   allowNull: true,
+  // })
+  // picture!: string;
 
   @Column({
     allowNull: false,

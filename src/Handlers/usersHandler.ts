@@ -56,7 +56,7 @@ export const putUser = async (req: Request, res: Response) => {
     res.status(200).send(user);
   } catch (error) {
     console.error("Error", error);
-    res.status(400).json({ message: "failed" });
+    res.status(400).json({ message: "Not possible to upgrade user to Premium" });
   }
 };
 

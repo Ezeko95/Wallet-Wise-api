@@ -32,7 +32,6 @@ import config from "../../lib/config";
 export interface IUser extends UserModel {
   name: string;
   email: string;
-  picture: string;
   password: string;
   premium: boolean;
   balance: BalanceModel;
