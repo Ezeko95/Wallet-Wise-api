@@ -1,5 +1,5 @@
 import * as jwt from "jsonwebtoken";
-import config from "./lib/config";
+import config from "../lib/config";
 
 export function generateToken(email: string): string {
   const token = jwt.sign({ email }, config.secret, { expiresIn: "1h" });

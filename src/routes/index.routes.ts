@@ -2,16 +2,18 @@ import { Router } from "express";
 import userRouter from "./user.routes";
 import movementRouter from "./movements.routes";
 import balanceRouter from "./balance.routes";
-import accountRouter from "./account.routes"
+import accountRouter from "./account.routes";
+import { Request, Response } from "express";
+import { auth } from "../authMiddleware";
 
 const router = Router();
 
-    router.use("/user", userRouter);
+router.use("/user", userRouter);
 
-    router.use("/movement", movementRouter);
+router.use("/movement", movementRouter);
 
-    router.use("/balance", balanceRouter);
+router.use("/balance", balanceRouter);
 
-    router.use("/account", accountRouter);
+router.use("/account", accountRouter);
 
 export default router;
