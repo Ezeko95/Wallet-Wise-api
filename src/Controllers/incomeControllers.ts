@@ -2,6 +2,7 @@ import { Balance as BalanceModel } from '../models/Balance';
 import { Income as IncomeModel } from '../models/Income';
 import { Account as AccountModel } from '../models/Account';
 import { IIncome } from '../Handlers/movementsHandler';
+import { NewIncome } from '../Handlers/incomeHandler';
 
 export const createIncome = async (infoIncome: IIncome) => {
 
@@ -124,3 +125,47 @@ export const reverseDeleteIncome= async (id: number) =>{
 
     return finalBalance;
 };
+
+export const putIncome= async (infoIncome: NewIncome)=>{
+  
+    const income1 = await IncomeModel.findOne({where: {id: infoIncome.id}});
+    const amount1 = income1?.amount;
+  
+    infoIncome.amount && await IncomeModel.update(
+      { amount: infoIncome.amount }, 
+      { where: {id: infoIncome.id} }
+    );
+  
+    infoIncome.type && await IncomeModel.update(
+      { type: infoIncome.type }, 
+      { where: {id: infoIncome.id} }
+    );
+  
+    const income = await IncomeModel.findOne({where: {id: infoIncome.id}});
+    const accountIncome = income?.accountId;
+  
+    const accountToUpdate = await AccountModel.findOne({where: { id: accountIncome}});
+    const totalAccount = accountToUpdate?.total;
+  
+    if(totalAccount && amount1 && income?.amount){
+      const newTotal = totalAccount - amount1 + income?.amount;
+      await AccountModel.update({total: newTotal},{where: { id: accountIncome}})
+    };
+    
+    const balanceToUpdate = await BalanceModel.findOne({where: { id: accountToUpdate?.userId}})
+    const totalBalance = balanceToUpdate?.total;
+  
+    if(totalBalance && amount1 && income?.amount){
+      const newTotal = totalBalance - amount1 + income?.amount
+      await BalanceModel.update({ total: newTotal }, { where: { id: accountToUpdate?.userId }});
+    }
+  
+    const finalBalance = await AccountModel.findOne({
+      where: { id: accountIncome, name: income?.account},
+      include: 
+        [ IncomeModel ]
+    })
+    
+    return finalBalance;
+  }
+  

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createExpense, getAllIdExpense, deleteExpense, reverseDeleteExpense } from '../Controllers/expenseControllers';
+import { createExpense, getAllIdExpense, deleteExpense, reverseDeleteExpense, putExpense } from '../Controllers/expenseControllers';
 
 export const getExpenses = async (req: Request, res: Response) => {
   const id= req.params.id;
@@ -61,6 +61,36 @@ export const showExpenseDeleted= async(req: Request, res: Response) => {
     res
       .status(400)
       .json({ message: 'Failed to show. Try again later...' });
+  
+  }
+};
+
+export interface NewExpense{
+  description: string;
+  amount: number;
+  paymentMethod: string;
+  category: string;
+  id: number;
+}
+export const updateExpense=  async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const newInfo = req.body;
+  try {
+
+    const infoExpense: NewExpense = {
+      ...newInfo,
+      ['id']: +id,
+    };
+    const expense = await putExpense(infoExpense);
+    
+      if(!expense) throw Error('The expense was not updated')
+      
+      res.status(200).send(expense)
+  } catch (error) {
+    console.error('Error ocurred while updating expenses...', error);
+    res
+      .status(400)
+      .json({ message: 'Failed to update. Try again later...' });
   
   }
 };
