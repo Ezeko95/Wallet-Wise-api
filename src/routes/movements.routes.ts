@@ -4,11 +4,13 @@ import {
   getExpenses,
   hideExpense,
   showExpenseDeleted,
+  updateExpense,
 } from '../Handlers/expenseHandler';
 import {
   getIncomes,
   hideIncome,
   showIncomeDeleted,
+  updateIncome,
 } from '../Handlers/incomeHandler';
 import {
   getIncomeDateFilter,
@@ -59,6 +61,8 @@ movementRouter.get('/expenseAmountOrder/:id', getExpenseAmountOrder);
 
 movementRouter.get('/expenseDateOrder/:id', getExpenseDateOrder);
 
+movementRouter.put('/newExpense/:id', updateExpense);
+
 movementRouter.get('/incomes/:id', getIncomes);
 
 movementRouter.delete('/income/:id', hideIncome);
@@ -76,5 +80,7 @@ movementRouter.get('/incomeAlphaOrder/:id', getIncomeAlphaOrder);
 movementRouter.get('/incomeAmountOrder/:id', getIncomeAmountOrder);
 
 movementRouter.get('/incomeDateOrder/:id', getIncomeDateOrder);
+
+movementRouter.put('/newIncome/:id', updateIncome);
 
 export default movementRouter;
