@@ -5,6 +5,7 @@ import {
   getOneUser,
   updateUser,
   loginUser,
+  userSearch
 } from "../Controllers/usersControllers";
 
 /////////// REGISTRO //////////////////
@@ -72,3 +73,12 @@ export const getUser = async (req: Request, res: Response) => {
   }
 };
 
+export const searchUser = async (req: Request, res: Response) => {
+  const name = req.query.name as string;
+  try {
+    const user = await userSearch(name);
+    res.status(200).send(user);
+  }catch (error) {
+    res.status(400).json({message: "No user found with that name. Try again..."})
+  }
+}

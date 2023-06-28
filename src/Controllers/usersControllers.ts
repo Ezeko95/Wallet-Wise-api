@@ -6,28 +6,22 @@ import * as jwt from "jsonwebtoken"; // token generator
 import * as nodemailer from "nodemailer"; // servicio de email automatico
 import * as fs from "fs"; // template mail HTML carpeta root
 import config from "../../lib/config";
+import { Op } from "sequelize";
 
 // Envio de emails NO TOCAR!!!
-  // Transporter para enviar mails
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    auth: {
-      user: config.gmail,
-      pass: config.pass, //
-    },
-  });
-  // Emails HTML Templates
-  const premiumHtml = fs.readFileSync("premiumEmail.html", "utf-8");
-  const welcomeHtml = fs.readFileSync("newsLetter.html", "utf-8");
-  // send mail with defined transport object
-  // let info = transporter.sendMail({
-  //   from: "<walletwise23@gmail.com>",
-  //   to: user.email,
-  //   subject: "Thank you for subscribing to WalletWise",
-  //   text: "Hola TyperEscripter",
-  //   html: welcomeHtml,
-  // });
+// Transporter para enviar mails
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  auth: {
+    user: config.gmail,
+    pass: config.pass, //
+  },
+});
+// Emails HTML Templates
+const premiumHtml = fs.readFileSync("premiumEmail.html", "utf-8");
+const welcomeHtml = fs.readFileSync("newsLetter.html", "utf-8");
+
 // interface para el model del User
 export interface IUser extends UserModel {
   name: string;
@@ -57,7 +51,7 @@ export const createUser = async (user: IUser, balanceData: any) => {
 
     const generateAccessToken = (user: IUser) => {
       const accessToken = jwt.sign({ userId: user.email }, config.secret, {
-        expiresIn: "1h",
+        expiresIn: "3h",
       });
 
       return accessToken;
@@ -67,14 +61,13 @@ export const createUser = async (user: IUser, balanceData: any) => {
 
     // Se envia al usuario email de bienvenida
     let info = transporter.sendMail({
-      from: "<walletwise23@gmail.com>",
+      from: config.gmail,
       to: user.email,
-      subject: "Thank you for subscribing to WalletWise",
-      text: "Hola TyperEscripter",
+      subject: "Welcome to Wallet Wise!",
       html: welcomeHtml,
     });
 
-    return { newUser, balance, accessToken };
+    return { newUser, balance };
   } catch (error) {
     await transaction.rollback();
 
@@ -98,7 +91,7 @@ export const loginUser = async (email: string, password: string) => {
   }
   // Genera Token y lo retorna al front
   const accessToken = jwt.sign({ user, email: user.email }, config.secret, {
-    expiresIn: "1h",
+    expiresIn: "2h",
   });
   return accessToken;
 };
@@ -139,4 +132,10 @@ export const getOneUser = async (id: number) => {
   if (!user) throw new Error("No user found");
 
   return user;
+};
+
+export const userSearch = async (name: string) => {
+  return await UserModel.findAll({
+    where: { name: {[Op.like]: `${name}`} },
+  });
 };

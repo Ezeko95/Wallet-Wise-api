@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getUser, getUsers, postUser, putUser, handleLoginUser } from '../Handlers/usersHandler';
+import { getUser, getUsers, postUser, putUser, handleLoginUser, searchUser } from '../Handlers/usersHandler';
 
 const userRouter: Router = Router();
 
@@ -8,6 +8,8 @@ const userRouter: Router = Router();
     userRouter.get('/:id', getUser);
 
     userRouter.put('/:id', putUser);
+
+    userRouter.get("/search", searchUser)
     
     userRouter.post('/register', postUser); // Registro de usuarios
 
