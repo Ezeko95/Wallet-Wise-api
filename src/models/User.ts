@@ -4,7 +4,7 @@ import {
   Table,
   CreatedAt,
   UpdatedAt,
-  HasOne
+  HasOne,
 } from "sequelize-typescript";
 import { Balance } from "./Balance";
 
@@ -23,13 +23,13 @@ export class User extends Model<User> {
 
   @Column({
     allowNull: false,
-    unique: true
+    // unique: true
   })
   email!: string;
 
   @Column({
     allowNull: false,
-    unique: true
+    // unique: true
   })
   password!: string;
 
