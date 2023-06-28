@@ -49,23 +49,23 @@ export const createUser = async (user: IUser, balanceData: any) => {
 
     await transaction.commit();
 
-    // const generateAccessToken = (user: IUser) => {
-    //   const accessToken = jwt.sign({ userId: user.email }, config.secret, {
-    //     expiresIn: "3h",
-    //   });
+    const generateAccessToken = (user: IUser) => {
+      const accessToken = jwt.sign({ userId: user.email }, config.secret, {
+        expiresIn: "3h",
+      });
 
-    //   return accessToken;
-    // };
-    // // Generar Token para nuevo usuario
-    // const accessToken = generateAccessToken(newUser);
+      return accessToken;
+    };
+    // Generar Token para nuevo usuario
+    const accessToken = generateAccessToken(newUser);
 
     // Se envia al usuario email de bienvenida
-    // let info = transporter.sendMail({
-    //   from: config.gmail,
-    //   to: user.email,
-    //   subject: "Welcome to Wallet Wise!",
-    //   html: welcomeHtml,
-    // });
+    let info = transporter.sendMail({
+      from: config.gmail,
+      to: user.email,
+      subject: "Welcome to Wallet Wise!",
+      html: welcomeHtml,
+    });
 
     return { newUser, balance };
   } catch (error) {
