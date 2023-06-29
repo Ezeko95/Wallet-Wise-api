@@ -206,13 +206,13 @@ export const createUser = async (user: IUser, balanceData: any) => {
     const accessToken = generateAccessToken(newUser);
 
     // Se envia al usuario email de bienvenida
-    let info = transporter.sendMail({
-      from: "<walletwise23@gmail.com>",
-      to: user.email,
-      subject: "Thank you for subscribing to WalletWise",
-      text: "Hola TyperEscripter",
-      html: welcomeHtml,
-    });
+    // let info = transporter.sendMail({
+    //   from: "<walletwise23@gmail.com>",
+    //   to: user.email,
+    //   subject: "Thank you for subscribing to WalletWise",
+    //   text: "Hola TyperEscripter",
+    //   html: welcomeHtml,
+    // });
 
     return { newUser, balance, accessToken };
   } catch (error) {

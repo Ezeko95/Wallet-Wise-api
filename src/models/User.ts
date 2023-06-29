@@ -62,9 +62,11 @@ import {
   Table,
   CreatedAt,
   UpdatedAt,
-  HasOne
+  HasOne,
+  HasMany
 } from "sequelize-typescript";
 import { Balance } from "./Balance";
+import { Goal } from "./Goal";
 
 @Table
 export class User extends Model<User> {
@@ -113,4 +115,7 @@ export class User extends Model<User> {
 
   @HasOne(() => Balance)
   balance!: Balance;
+
+  @HasMany(()=> Goal)
+  goal!: Goal[];
 }
