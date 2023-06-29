@@ -49,6 +49,8 @@ export const createUser = async (user: IUser, balanceData: any) => {
 
     await transaction.commit();
 
+
+    // sacar el accessToken en produccion, los usarios deben logearse luego de registrarse.
     const generateAccessToken = (user: IUser) => {
       const accessToken = jwt.sign({ userId: user.email }, config.secret, {
         expiresIn: "3h",

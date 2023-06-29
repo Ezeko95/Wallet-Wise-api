@@ -16,7 +16,7 @@ userRouter.get("/:id", getUser);
 
 userRouter.put("/:id", putUser);
 
-userRouter.get("/search", searchUser);
+userRouter.get("/search", searchUser); // busqueda de usuario
 
 userRouter.post("/register", postUser); // Registro de usuarios
 

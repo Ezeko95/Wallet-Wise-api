@@ -23,7 +23,7 @@ export class User extends Model<User> {
 
   @Column({
     allowNull: false,
-    unique: true
+    unique: true // unique para produccion
   })
   email!: string;
 
