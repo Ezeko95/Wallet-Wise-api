@@ -121,5 +121,5 @@ export class User extends Model<User> {
   goal!: Goal[];
 
   @HasMany(()=> Shared)
-  Shared!: Shared[]
+  shared!: Shared[]
 }

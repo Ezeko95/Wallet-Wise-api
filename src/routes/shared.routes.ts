@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { getShared, postShared } from "../Handlers/sharedHandler"
+import { deleteShared, getRoomById, postShared } from "../Handlers/sharedHandler"
 
 const sharedRouter: Router = Router();
 
-    sharedRouter.get("/:id", getShared)
+    sharedRouter.get("/:id", getRoomById)
 
     sharedRouter.post("/:id", postShared);
+
+    sharedRouter.delete("/:id", deleteShared);
 
 export default sharedRouter;

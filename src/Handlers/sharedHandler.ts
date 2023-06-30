@@ -1,9 +1,16 @@
 import { Request, Response } from "express";
+import { Participants } from "../models/Participants";
+import { createShared, getRoom } from "../Controllers/sharedController";
+import { IShared, IParticipant } from "../Controllers/sharedController";
+
 
 export const postShared = async (req: Request, res: Response) => {
-
+    const {id} = req.params;
+    const shared: IShared = req.body;
+    
     try {
-        res.status(200).send("llegamos a la ruta de  POST shared")
+        const newShared = await createShared(+id, shared)
+        res.status(200).send(newShared)
     } catch (error) {
         res
             .status(400)
@@ -11,13 +18,27 @@ export const postShared = async (req: Request, res: Response) => {
     }
 }
 
-export const getShared = async (req:Request, res:Response) => {
-
+export const getRoomById = async (req:Request, res:Response) => {
+    const {id}= req.params;
     try {
-        res.status(200).send("llegamos a la ruta de GET shared")
+        const room= await getRoom(+id)
+        res.status(200).send(room)
     } catch (error) {
         res
             .status(400)
             .json({message: "Failed to GET a shared"})
+    }
+}
+
+
+export const deleteShared = async (req:Request, res:Response) => {
+    const {id}= req.params;
+    try {
+        const room= await getRoom(+id)
+        res.status(200).send(room)
+    } catch (error) {
+        res
+            .status(400)
+            .json({message: "Failed to DELETE a shared"})
     }
 }
