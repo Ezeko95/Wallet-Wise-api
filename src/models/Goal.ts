@@ -47,6 +47,12 @@ import { User } from './User';
     })
     picture!: string;
   
+    @Column({
+      allowNull: false,
+      defaultValue:false
+    })
+    deletedGoal!: boolean;
+  
     @CreatedAt
     @Column
     createdAt!: Date;
