@@ -67,6 +67,7 @@ import {
 } from "sequelize-typescript";
 import { Balance } from "./Balance";
 import { Goal } from "./Goal";
+import { Shared } from "./Shared";
 
 @Table
 export class User extends Model<User> {
@@ -118,4 +119,7 @@ export class User extends Model<User> {
 
   @HasMany(()=> Goal)
   goal!: Goal[];
+
+  @HasMany(()=> Shared)
+  Shared!: Shared[]
 }
