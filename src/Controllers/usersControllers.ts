@@ -188,7 +188,7 @@ export const createUser = async (user: IUser, balanceData: any) => {
     user.password = hashedPassword;
 
     const newUser = await UserModel.create(user, { transaction });
-
+  
     balanceData.userId = newUser.id;
 
     const balance = await BalanceModel.create(balanceData, { transaction });

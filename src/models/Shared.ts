@@ -36,6 +36,12 @@ export class Shared extends Model<Shared> {
     })
     personalExpense!: number;
 
+    @Column({
+        allowNull: true,
+        defaultValue: false
+    })
+    deletedShared!: boolean;
+
     @CreatedAt
     @Column
     createdAt!: Date;

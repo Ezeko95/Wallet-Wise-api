@@ -53,3 +53,19 @@ export const deleteRoom= async (id: number)=>{
     await SharedModel.destroy({where:{id}});
     return sharedFound;
 }
+
+export const hideRoom= async (id: number)=>{
+    const roomFound= await SharedModel.findOne({where: {id}})
+    if(!roomFound) throw Error('Shared Room does not exist');
+
+    await SharedModel.update({deletedShared: true}, {where: {id}})
+    const edit= await SharedModel.findOne({where: {id}})
+    return edit
+}
+
+export const getAllRoom= async (id: number)=>{
+    const rooms= await SharedModel.findAll();
+    if(!rooms) throw Error('No shared rooms');
+
+    return rooms;
+}
