@@ -23,6 +23,7 @@
     "pg": "^8.11.0",
     "sequelize": "^6.32.0",
     "sequelize-typescript": "^2.1.5",
+    "stripe": "^12.11.0",
     "typescript": "^5.1.3"
   },
   "devDependencies": {

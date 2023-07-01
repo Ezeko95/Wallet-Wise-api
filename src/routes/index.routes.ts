@@ -6,6 +6,7 @@ import sharedRouter from "./shared.routes";
 import accountRouter from "./account.routes";
 import { auth } from "../authMiddleware"; // AUTHMIDDLEWARE QUE CHEQUEA SI EL USUARIO TIENE CREDENCIALES PARA NAVEGAR LAS RUTAS! NO BORRAR!!!!
 import goalsRouter from "./goals.routes";
+import payRout from "./paymentRoute";
 
 const router = Router();
 
@@ -20,5 +21,7 @@ router.use("/account", accountRouter); // ACA VA EL AUTHMIDDLEWARE PARA PROTEGER
 router.use("/goal", goalsRouter);
 
 router.use("/shared", sharedRouter);
+
+router.use("/payment", payRout)
 
 export default router;
