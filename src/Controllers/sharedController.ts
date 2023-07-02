@@ -41,31 +41,38 @@ export const getRoom= async(id: number)=>{
 
     if(!room) throw Error('Shared Room does not exist');
 
-    const room2=  await SharedModel.findOne({where: {id}, include: [ParticipantsModel]});
+    const room2 =  await SharedModel.findOne({where: {id}, include: [ParticipantsModel]});
 
     return room2;
 }
 
-export const deleteRoom= async (id: number)=>{
-    const sharedFound= await SharedModel.findByPk(id);
+export const deleteRoom = async (id: number)=>{
+    const sharedFound = await SharedModel.findByPk(id);
+
     if(!sharedFound) throw Error('Shared Room does not exist');
 
     await SharedModel.destroy({where:{id}});
+
     return sharedFound;
 }
 
-export const hideRoom= async (id: number)=>{
-    const roomFound= await SharedModel.findOne({where: {id}})
+export const hideRoom = async (id: number)=>{
+    const roomFound = await SharedModel.findOne({where: {id}})
+
     if(!roomFound) throw Error('Shared Room does not exist');
 
     await SharedModel.update({deletedShared: true}, {where: {id}})
-    const edit= await SharedModel.findOne({where: {id}})
+
+    const edit = await SharedModel.findOne({where: {id}})
+
     return edit
 }
 
-export const getAllRoom= async (id: number)=>{
-    const rooms= await SharedModel.findAll();
-    if(!rooms) throw Error('No shared rooms');
 
+export const getAllRoom = async (id: number)=>{
+    const rooms = await SharedModel.findAll({include: [ParticipantsModel]});
+    
+    if(!rooms) throw Error('No shared rooms');
+    
     return rooms;
 }
