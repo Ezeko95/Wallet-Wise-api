@@ -139,36 +139,36 @@
 
 //   return user;
 // };
-import { User as UserModel } from "../models/User";
-import { Balance as BalanceModel } from "../models/Balance";
-import { sequelize } from "../db";
-import * as bcrypt from "bcrypt"; // para hashear passwords
-import * as jwt from "jsonwebtoken"; // token generator
-import * as nodemailer from "nodemailer"; // servicio de email automatico
-import * as fs from "fs"; // template mail HTML carpeta root
-import config from "../../lib/config";
+import { User as UserModel } from '../models/User';
+import { Balance as BalanceModel } from '../models/Balance';
+import { sequelize } from '../db';
+import * as bcrypt from 'bcrypt'; // para hashear passwords
+import * as jwt from 'jsonwebtoken'; // token generator
+import * as nodemailer from 'nodemailer'; // servicio de email automatico
+import * as fs from 'fs'; // template mail HTML carpeta root
+import config from '../../lib/config';
 
 // Envio de emails NO TOCAR!!!
-  // Transporter para enviar mails
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    auth: {
-      user: config.gmail,
-      pass: config.pass, //
-    },
-  });
-  // Emails HTML Templates
-  const premiumHtml = fs.readFileSync("premiumEmail.html", "utf-8");
-  const welcomeHtml = fs.readFileSync("newsLetter.html", "utf-8");
-  // send mail with defined transport object
-  // let info = transporter.sendMail({
-  //   from: "<walletwise23@gmail.com>",
-  //   to: user.email,
-  //   subject: "Thank you for subscribing to WalletWise",
-  //   text: "Hola TyperEscripter",
-  //   html: welcomeHtml,
-  // });
+// Transporter para enviar mails
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  auth: {
+    user: config.gmail,
+    pass: config.pass, //
+  },
+});
+// Emails HTML Templates
+const premiumHtml = fs.readFileSync('premiumEmail.html', 'utf-8');
+const welcomeHtml = fs.readFileSync('newsLetter.html', 'utf-8');
+// send mail with defined transport object
+// let info = transporter.sendMail({
+//   from: "<walletwise23@gmail.com>",
+//   to: user.email,
+//   subject: "Thank you for subscribing to WalletWise",
+//   text: "Hola TyperEscripter",
+//   html: welcomeHtml,
+// });
 // interface para el model del User
 export interface IUser extends UserModel {
   name: string;
@@ -188,7 +188,7 @@ export const createUser = async (user: IUser, balanceData: any) => {
     user.password = hashedPassword;
 
     const newUser = await UserModel.create(user, { transaction });
-  
+
     balanceData.userId = newUser.id;
 
     const balance = await BalanceModel.create(balanceData, { transaction });
@@ -197,7 +197,7 @@ export const createUser = async (user: IUser, balanceData: any) => {
 
     const generateAccessToken = (user: IUser) => {
       const accessToken = jwt.sign({ user: user }, config.secret, {
-        expiresIn: "1h",
+        expiresIn: '1h',
       });
 
       return accessToken;
@@ -218,7 +218,7 @@ export const createUser = async (user: IUser, balanceData: any) => {
   } catch (error) {
     await transaction.rollback();
 
-    throw Error("error in the creation");
+    throw Error('error in the creation');
   }
 };
 
@@ -228,17 +228,17 @@ export const loginUser = async (email: string, password: string) => {
   const user = await UserModel.findOne({ where: { email } });
   // Tira error si no encuentra
   if (!user) {
-    throw new Error("Please enter a valid username");
+    throw new Error('Please enter a valid username');
   }
   // Chequea que la password y el hash coicidan
   const passwordMatch = await bcrypt.compare(password, user.password);
   // Si no coinciden tira error
   if (!passwordMatch) {
-    throw new Error("Invalid password. Please try again");
+    throw new Error('Invalid password. Please try again');
   }
   // Genera Token y lo retorna al front
   const accessToken = jwt.sign({ user, email: user.email }, config.secret, {
-    expiresIn: "1h",
+    expiresIn: '1h',
   });
   return accessToken;
 };
@@ -247,26 +247,28 @@ export const loginUser = async (email: string, password: string) => {
 export const updateUser = async (id: number) => {
   const user = await UserModel.findByPk(id);
   if (!user) {
-    throw new Error("No user found");
+    throw new Error('No user found');
   }
   const toggle = user.premium;
-  UserModel.update({ premium: !toggle }, { where: { id } });
+  if (toggle === false) {
+    UserModel.update({ premium: true }, { where: { id } });
+  }
 
   //Email al usuario
-  let info = transporter.sendMail({
-    from: "<walletwise23@gmail.com>",
-    to: user.email,
-    subject: "Thank you for subscribing to WalletWise",
-    text: "Hola TyperEscripter",
-    html: premiumHtml,
-  });
+  // let info = transporter.sendMail({
+  //   from: '<walletwise23@gmail.com>',
+  //   to: user.email,
+  //   subject: 'Thank you for subscribing to WalletWise',
+  //   text: 'Hola TyperEscripter',
+  //   html: premiumHtml,
+  // });
 
   return `the suscription has changed from ${toggle} succesfully to ${!toggle}`;
 };
 
 export const getAllUsers = async () => {
   const users = await UserModel.findAll({
-    include: [{ model: BalanceModel, attributes: ["total"] }],
+    include: [{ model: BalanceModel, attributes: ['total'] }],
   });
   return users;
 };
@@ -274,10 +276,9 @@ export const getAllUsers = async () => {
 export const getOneUser = async (id: number) => {
   const user = await UserModel.findOne({
     where: { id: id },
-    include: [{ model: BalanceModel, attributes: ["total"] }],
+    include: [{ model: BalanceModel, attributes: ['total'] }],
   });
-  if (!user) throw new Error("No user found");
+  if (!user) throw new Error('No user found');
 
   return user;
 };
-
