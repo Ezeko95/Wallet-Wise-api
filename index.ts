@@ -15,7 +15,7 @@
 import { sequelize } from './src/db';
 import app from './src/app';
 sequelize
-  .sync({ alter: true, logging: false })
+  .sync({ force: true, logging: false })
   .then(() => {
     app.listen(3001, function () {
       console.log('Wake up, Neo...');

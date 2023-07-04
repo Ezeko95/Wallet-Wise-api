@@ -70,9 +70,9 @@ export const hideRoom = async (id: number)=>{
 
 
 export const getAllRoom = async (id: number)=>{
-    const rooms = await SharedModel.findAll({include: [ParticipantsModel]});
+    const rooms = await SharedModel.findAll({where: {userId : id}, include: [ParticipantsModel]});
     
-    if(!rooms) throw Error('No shared rooms');
+    if(rooms.length === 0) throw Error('No shared rooms');
     
     return rooms;
 }

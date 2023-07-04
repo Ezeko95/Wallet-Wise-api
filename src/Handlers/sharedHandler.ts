@@ -56,7 +56,7 @@ export const getAllRooms = async (req: Request, res: Response) => {
   try {
     const room = await getAllRoom(+id);
     res.status(200).send(room);
-  } catch (error) {
-    res.status(400).json({ message: 'Failed to DELETE a shared' });
+  } catch (error : any) {
+    res.status(400).json({ message: error?.message });
   }
 };
