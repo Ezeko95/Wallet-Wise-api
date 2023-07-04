@@ -54,38 +54,11 @@ export const getAllIdExpense = async (id: number) => {
 export const deleteExpense = async (id: number) =>{
 
   const expense = await ExpenseModel.findOne({where: {id: id}});
+  if(!expense) throw Error ('Expense does not exist')
 
-  await ExpenseModel.update({deletedExpense: true}, {where: {id: id}});
-
-  const accountExpense = expense?.accountId;
-
-  const accountToUpdate = await AccountModel.findOne({where: { id: accountExpense}});
-
-  const totalAccount = accountToUpdate?.total;
-
-  if(totalAccount && expense?.amount){
-    const newTotal = totalAccount + expense?.amount
-    await AccountModel.update({total: newTotal},{where: { id: accountExpense, name: expense?.paymentMethod}})
-  };
-
-  const balanceToUpdate = await BalanceModel.findOne({where: { id: accountToUpdate?.userId}})
-
-  const totalBalance = balanceToUpdate?.total;
-
-  if(totalBalance && expense?.amount){
-    const newTotal = totalBalance + expense?.amount
-    await BalanceModel.update({ total: newTotal }, { where: { id: accountToUpdate?.userId }});
-  }
-
-  const finalBalance = await BalanceModel.findOne({
-    where: { id: accountToUpdate?.userId },
-    include: [{
-      model: AccountModel,
-      include: [ExpenseModel]
-    }]
-  })
-
-    return finalBalance;
+  await ExpenseModel.destroy({where: {id}})
+  return expense
+  
 };
 
 

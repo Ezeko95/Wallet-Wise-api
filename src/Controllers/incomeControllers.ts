@@ -55,37 +55,42 @@ export const deleteIncome = async (id: number) =>{
 
     const income = await IncomeModel.findOne({where: {id: id}});
 
-    await IncomeModel.update({deletedIncome: true}, {where: {id: id}});
+    if(!income) throw Error ('Income does not exist')
 
-    const accountIncome = income?.accountId;
+    await IncomeModel.destroy({where: {id}})
+    return income
 
-    const accountToUpdate = await AccountModel.findOne({where: { id: accountIncome}});
+    // await IncomeModel.update({deletedIncome: true}, {where: {id: id}});
 
-    const totalAccount = accountToUpdate?.total;
+    // const accountIncome = income?.accountId;
 
-    if(totalAccount && income?.amount){
-        const newTotal = totalAccount - income?.amount
-        await AccountModel.update({total: newTotal},{where: { id: accountIncome, name: income?.account}})
-    };
+    // const accountToUpdate = await AccountModel.findOne({where: { id: accountIncome}});
 
-    const balanceToUpdate = await BalanceModel.findOne({where: { id: accountToUpdate?.userId}})
+    // const totalAccount = accountToUpdate?.total;
 
-    const totalBalance = balanceToUpdate?.total;
+    // if(totalAccount && income?.amount){
+    //     const newTotal = totalAccount - income?.amount
+    //     await AccountModel.update({total: newTotal},{where: { id: accountIncome, name: income?.account}})
+    // };
 
-    if(totalBalance && income?.amount){
-        const newTotal = totalBalance - income?.amount
-        await BalanceModel.update({ total: newTotal }, { where: { id: accountToUpdate?.userId }});
-    }
+    // const balanceToUpdate = await BalanceModel.findOne({where: { id: accountToUpdate?.userId}})
 
-    const finalBalance = await BalanceModel.findOne({
-        where: { id: accountToUpdate?.userId },
-        include: [{
-            model: AccountModel,
-            include: [IncomeModel]
-        }]
-    })
+    // const totalBalance = balanceToUpdate?.total;
+
+    // if(totalBalance && income?.amount){
+    //     const newTotal = totalBalance - income?.amount
+    //     await BalanceModel.update({ total: newTotal }, { where: { id: accountToUpdate?.userId }});
+    // }
+
+    // const finalBalance = await BalanceModel.findOne({
+    //     where: { id: accountToUpdate?.userId },
+    //     include: [{
+    //         model: AccountModel,
+    //         include: [IncomeModel]
+    //     }]
+    // })
     
-    return finalBalance;
+    // return finalBalance;
 }
 
 
