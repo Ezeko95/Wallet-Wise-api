@@ -63,7 +63,8 @@ import {
   CreatedAt,
   UpdatedAt,
   HasOne,
-  HasMany
+  HasMany,
+  Sequelize,
 } from "sequelize-typescript";
 import { Balance } from "./Balance";
 import { Goal } from "./Goal";
@@ -84,19 +85,20 @@ export class User extends Model<User> {
 
   @Column({
     allowNull: false,
-    unique: true
+    unique: true,
   })
   email!: string;
 
   @Column({
     allowNull: false,
-    unique: true
+    unique: true,
   })
   password!: string;
 
   @Column({
-    defaultValue:"https://i.scdn.co/image/ab67706c0000da84508c76d25acfbf1dc9fc0282" ,
-    allowNull: true
+    defaultValue:
+      "https://i.scdn.co/image/ab67706c0000da84508c76d25acfbf1dc9fc0282",
+    allowNull: true,
   })
   picture!: string;
 
@@ -105,6 +107,18 @@ export class User extends Model<User> {
     defaultValue: false,
   })
   premium!: boolean;
+
+  @Column({
+    allowNull: false,
+    defaultValue: true,
+  })
+  active!: boolean;
+
+  @Column({
+    allowNull: false,
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+  })
+  suspenseEndDate!: Date;
 
   @CreatedAt
   @Column
@@ -117,9 +131,9 @@ export class User extends Model<User> {
   @HasOne(() => Balance)
   balance!: Balance;
 
-  @HasMany(()=> Goal)
+  @HasMany(() => Goal)
   goal!: Goal[];
 
-  @HasMany(()=> Shared)
-  shared!: Shared[]
+  @HasMany(() => Shared)
+  shared!: Shared[];
 }
