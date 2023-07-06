@@ -199,13 +199,13 @@ export const createUser = async (user: IUser, balanceData: any) => {
     const accessToken = generateAccessToken(newUser);
 
     // send mail with defined transport object
-    let info = transporter.sendMail({
-      from: "<walletwise23@gmail.com>",
-      to: user.email,
-      subject: "Thank you for subscribing to WalletWise",
-      text: "Hola TyperEscripter",
-      html: welcomeHtml,
-    });
+    // let info = transporter.sendMail({
+    //   from: "<walletwise23@gmail.com>",
+    //   to: user.email,
+    //   subject: "Thank you for subscribing to WalletWise",
+    //   text: "Hola TyperEscripter",
+    //   html: welcomeHtml,
+    // });
 
     return { newUser, balance, accessToken };
   } catch (error) {
@@ -246,13 +246,13 @@ export const updateUser = async (id: number) => {
   if (toggle === false) {
     UserModel.update({ premium: true }, { where: { id } });
   }
-  let info = transporter.sendMail({
-    from: '<walletwise23@gmail.com>',
-    to: user.email,
-    subject: 'Thank you for subscribing to WalletWise',
-    text: 'Hola TyperEscripter',
-    html: premiumHtml,
-  });
+  // let info = transporter.sendMail({
+  //   from: '<walletwise23@gmail.com>',
+  //   to: user.email,
+  //   subject: 'Thank you for subscribing to WalletWise',
+  //   text: 'Hola TyperEscripter',
+  //   html: premiumHtml,
+  // });
 
   return `the suscription has changed from ${toggle} succesfully to ${!toggle}`;
 };
