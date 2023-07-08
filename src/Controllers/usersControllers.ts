@@ -26,7 +26,6 @@ const welcomeHtml = fs.readFileSync("newsLetter.html", "utf-8");
 export interface IUser extends UserModel {
   name: string;
   email: string;
-  picture: string;
   password: string;
   premium: boolean;
   balance: BalanceModel;
@@ -52,8 +51,8 @@ export const createUser = async (user: IUser, balanceData: any) => {
 
     // sacar el accessToken en produccion, los usarios deben logearse luego de registrarse.
     const generateAccessToken = (user: IUser) => {
-      const accessToken = jwt.sign({ userId: user.email }, config.secret, {
-        expiresIn: "3h",
+      const accessToken = jwt.sign({ user: user }, config.secret, {
+        expiresIn: "1h",
       });
 
       return accessToken;
@@ -61,13 +60,14 @@ export const createUser = async (user: IUser, balanceData: any) => {
     // Generar Token para nuevo usuario
     const accessToken = generateAccessToken(newUser);
 
-    // Se envia al usuario email de bienvenida
-    let info = transporter.sendMail({
-      from: config.gmail,
-      to: user.email,
-      subject: "Welcome to Wallet Wise!",
-      html: welcomeHtml,
-    });
+    // send mail with defined transport object
+    // let info = transporter.sendMail({
+    //   from: "<walletwise23@gmail.com>",
+    //   to: user.email,
+    //   subject: "Thank you for subscribing to WalletWise",
+    //   text: "Hola TyperEscripter",
+    //   html: welcomeHtml,
+    // });
 
     return { newUser, balance };
   } catch (error) {
@@ -105,16 +105,16 @@ export const updateUser = async (id: number) => {
     throw new Error("No user found");
   }
   const toggle = user.premium;
-  UserModel.update({ premium: !toggle }, { where: { id } });
-
-  //Email al usuario
-  let info = transporter.sendMail({
-    from: "<walletwise23@gmail.com>",
-    to: user.email,
-    subject: "Thank you for subscribing to WalletWise",
-    text: "Hola TyperEscripter",
-    html: premiumHtml,
-  });
+  if (toggle === false) {
+    UserModel.update({ premium: true }, { where: { id } });
+  }
+  // let info = transporter.sendMail({
+  //   from: '<walletwise23@gmail.com>',
+  //   to: user.email,
+  //   subject: 'Thank you for subscribing to WalletWise',
+  //   text: 'Hola TyperEscripter',
+  //   html: premiumHtml,
+  // });
 
   return `the suscription has changed from ${toggle} succesfully to ${!toggle}`;
 };

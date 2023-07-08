@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAllIdIncomes, deleteIncome, reverseDeleteIncome } from '../Controllers/incomeControllers';
+import { getAllIdIncomes, deleteIncome, reverseDeleteIncome, putIncome } from '../Controllers/incomeControllers';
 
 export const getIncomes = async (req: Request, res: Response) => {
     const id = req.params.id;
@@ -50,3 +50,34 @@ export const showIncomeDeleted= async(req: Request, res: Response) => {
     
     }
   };
+
+  export interface NewIncome{
+    amount: number;
+    type: string;
+    id: number;
+  }
+  
+  
+  export const updateIncome =  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const newInfo = req.body;
+    try {
+  
+      const infoIncome: NewIncome = {
+        ...newInfo,
+        ['id']: +id,
+      };
+      const expense = await putIncome(infoIncome);
+      
+        if(!expense) throw Error('The expense was not updated')
+        
+        res.status(200).send(expense)
+    } catch (error) {
+      console.error('Error ocurred while updating expenses...', error);
+      res
+        .status(400)
+        .json({ message: 'Failed to update. Try again later...' });
+    
+    }
+  };
+  
