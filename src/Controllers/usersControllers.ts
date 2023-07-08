@@ -141,3 +141,13 @@ export const userSearch = async (name: string) => {
     where: { name: {[Op.like]: `${name}`} },
   });
 };
+
+export const updatePhoto = async (id: number, picture: string)=>{
+  const userFound= await UserModel.findByPk(id);
+
+  if(!userFound) throw Error ('User not found');
+
+  await UserModel.update({picture: picture}, {where: {id}})
+
+  return await UserModel.findByPk(id);
+}

@@ -5,7 +5,8 @@ import {
   getOneUser,
   updateUser,
   loginUser,
-  userSearch
+  userSearch,
+  updatePhoto
 } from "../Controllers/usersControllers";
 
 /////////// REGISTRO //////////////////
@@ -82,3 +83,15 @@ export const searchUser = async (req: Request, res: Response) => {
     res.status(400).json({message: "No user found with that name. Try again..."})
   }
 }
+
+export const putUserPhoto = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const {picture} = req.body;
+  try {
+    const user = await updatePhoto(+id, picture);
+    res.status(200).send(user);
+  } catch (error) {
+    console.error("Error", error);
+    res.status(400).json({ message: "Not possible to update user photo" });
+  }
+};
