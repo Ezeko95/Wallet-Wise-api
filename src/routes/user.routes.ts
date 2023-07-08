@@ -6,6 +6,7 @@ import {
   putUser,
   handleLoginUser,
   searchUser,
+  putUserPhoto,
 } from "../Handlers/usersHandler";
 
 const userRouter: Router = Router();
@@ -15,6 +16,8 @@ userRouter.get("/", getUsers);
 userRouter.get("/:id", getUser);
 
 userRouter.put("/:id", putUser);
+
+userRouter.put("/photo/:id", putUserPhoto);
 
 userRouter.get("/search", searchUser); // busqueda de usuario
 
