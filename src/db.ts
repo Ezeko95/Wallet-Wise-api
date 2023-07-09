@@ -15,13 +15,13 @@ config;
 
 // // /////////////// *DEPLOY INTERNA* ////////////////////
 export const sequelize = new Sequelize(
-  "postgres://walletwise_rna8_user:K7QtR9L9CIdljUpCYfFIRvtAHI3Aiqe7@dpg-ciccogd9aq03rjmsppag-a/walletwise_rna8",
+  "postgres://walletwise_3w01_user:eeW0g1Y77fBAlXJZ8Km5UobnXzQpAj3j@dpg-cil155tgkuvinfmcoqg0-a/walletwise_3w01",
   { models: [__dirname + "/models"] }
 );
 
 /////// *DEPLOY EXTERNA* //////////////////////
 // export const sequelize = new Sequelize(
-//   "postgres://walletwise_rna8_user:K7QtR9L9CIdljUpCYfFIRvtAHI3Aiqe7@dpg-ciccogd9aq03rjmsppag-a.oregon-postgres.render.com/walletwise_rna8",
+//   "postgres://walletwise_3w01_user:eeW0g1Y77fBAlXJZ8Km5UobnXzQpAj3j@dpg-cil155tgkuvinfmcoqg0-a.oregon-postgres.render.com/walletwise_3w01",
 //   {
 //     models: [__dirname + "/models"],
 //     dialectOptions: {
